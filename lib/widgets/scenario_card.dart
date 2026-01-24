@@ -31,7 +31,6 @@ class ScenarioCard extends StatelessWidget {
         ),
         child: Stack(
           children: [
-            // Main Content
             Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -39,7 +38,6 @@ class ScenarioCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      // Emoji
                       Container(
                         width: 56,
                         height: 56,
@@ -88,7 +86,6 @@ class ScenarioCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  // Start Button
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
@@ -123,7 +120,6 @@ class ScenarioCard extends StatelessWidget {
                 ],
               ),
             ),
-            // Lock Overlay
             if (scenario.isLocked)
               Positioned.fill(
                 child: Container(
