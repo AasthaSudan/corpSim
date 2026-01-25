@@ -62,11 +62,9 @@
 //     _scrollToBottom();
 //   }
 //
-//   /// Send user message
 //   Future<void> sendMessage(String content) async {
 //     if (content.trim().isEmpty || isLoading.value) return;
 //
-//     // Add user message
 //     final userMessage = Message(
 //       id: DateTime.now().millisecondsSinceEpoch.toString(),
 //       content: content.trim(),
