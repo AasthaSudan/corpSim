@@ -169,15 +169,14 @@
 //         actions: [
 //           TextButton(
 //             onPressed: () {
-//               Get.back(); // Close dialog
-//               Get.back(); // Go back to scenarios
+//               Get.back();
+//               Get.back();
 //             },
 //             child: const Text('Back to Scenarios'),
 //           ),
 //           TextButton(
 //             onPressed: () {
-//               Get.back(); // Close dialog
-//               // TODO: Navigate to analysis screen
+//               Get.back();
 //             },
 //             child: const Text('View Analysis'),
 //           ),
