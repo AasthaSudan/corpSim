@@ -41,14 +41,12 @@ class ChatScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          // Metrics Bar
           Obx(() => MetricsBar(
             patience: controller.patience.value,
             leverage: controller.leverage.value,
             emotion: controller.emotion.value,
           )),
 
-          // Chat Messages
           Expanded(
             child: Obx(() {
               if (controller.messages.isEmpty && controller.isLoading.value) {
@@ -70,7 +68,6 @@ class ChatScreen extends StatelessWidget {
             }),
           ),
 
-          // Loading Indicator
           Obx(() {
             if (controller.isLoading.value) {
               return Container(
@@ -100,7 +97,6 @@ class ChatScreen extends StatelessWidget {
             return const SizedBox.shrink();
           }),
 
-          // Input Bar
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
