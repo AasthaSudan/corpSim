@@ -26,7 +26,6 @@ class BriefScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Mission Brief Header
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.all(20),
@@ -76,7 +75,6 @@ class BriefScreen extends StatelessWidget {
 
                     const SizedBox(height: 20),
 
-                    // Your Goal
                     _buildInfoCard(
                       context: context,
                       icon: Icons.flag,
@@ -87,7 +85,6 @@ class BriefScreen extends StatelessWidget {
 
                     const SizedBox(height: 16),
 
-                    // Opponent Profile
                     _buildInfoCard(
                       context: context,
                       icon: Icons.person,
@@ -168,8 +165,6 @@ class BriefScreen extends StatelessWidget {
                     ),
 
                     const SizedBox(height: 16),
-
-                    // Challenge
                     _buildInfoCard(
                       context: context,
                       icon: Icons.warning,
@@ -178,13 +173,12 @@ class BriefScreen extends StatelessWidget {
                       color: AppColors.accentYellow,
                     ),
 
-                    const SizedBox(height: 100), // Space for button
+                    const SizedBox(height: 100),
                   ],
                 ),
               ),
             ),
 
-            // Bottom Button
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
