@@ -1,118 +1,90 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import '../config/theme/app_colors.dart';
-import '../config/routes/app_routes.dart';
-import '../models/scenario.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import '../core/theme.dart';
+import '../core/models.dart';
 import '../widgets/scenario_card.dart';
+import 'negotiation_screen.dart';
 
 class ScenariosScreen extends StatelessWidget {
   const ScenariosScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final scenarios = Scenario.getSampleScenarios();
-
     return Scaffold(
-      backgroundColor: AppColors.backgroundGray,
-      appBar: AppBar(
-        title: const Text('Choose Your Challenge'),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.history),
-            onPressed: () {
-              Get.snackbar(
-                'Coming Soon',
-                'History feature will be available soon!',
-                snackPosition: SnackPosition.BOTTOM,
-                backgroundColor: AppColors.primaryTeal,
-                colorText: AppColors.white,
-                margin: const EdgeInsets.all(16),
-                borderRadius: 12,
-              );
-            },
-          ),
-        ],
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Container(
-              margin: const EdgeInsets.all(16),
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                gradient: AppColors.primaryGradient,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.primaryTeal.withOpacity(0.3),
-                    blurRadius: 12,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: AppGradients.main,
+        ),
+        child: SafeArea(
+          child: CustomScrollView(
+            slivers: [
+              // App Bar
+              SliverAppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+                  onPressed: () => Navigator.pop(context),
+                ),
+                title: const Text('Scenario Library'),
               ),
-              child: Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: AppColors.white.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Icon(
-                      Icons.emoji_events,
-                      color: AppColors.white,
-                      size: 32,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Ready to Practice?',
-                          style:
-                          Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: AppColors.white,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'Choose a scenario and master negotiation',
-                          style:
-                          Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: AppColors.white.withOpacity(0.9),
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
 
-            Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                itemCount: scenarios.length,
-                itemBuilder: (context, index) {
-                  return ScenarioCard(
-                    scenario: scenarios[index],
-                    onTap: () {
-                      Get.toNamed(
-                        AppRoutes.brief,
-                        arguments: scenarios[index],
-                      );
-                    },
-                  );
-                },
+              // Header
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 20, 24, 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Scenario Library',
+                        style: Theme.of(context).textTheme.displayMedium,
+                      ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.2),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Choose a simulation environment to practice.',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ).animate().fadeIn(duration: 600.ms, delay: 200.ms).slideY(begin: 0.2),
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ],
+
+              // Scenarios Grid
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                sliver: SliverGrid(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 16,
+                    crossAxisSpacing: 16,
+                    childAspectRatio: 0.75,
+                  ),
+                  delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                      final scenario = MockData.scenarios[index];
+                      return ScenarioCard(
+                        scenario: scenario,
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => NegotiationScreen(scenario: scenario),
+                            ),
+                          );
+                        },
+                      )
+                          .animate()
+                          .fadeIn(duration: 600.ms, delay: (index * 100).ms)
+                          .slideY(begin: 0.2);
+                    },
+                    childCount: MockData.scenarios.length,
+                  ),
+                ),
+              ),
+
+              const SliverToBoxAdapter(child: SizedBox(height: 24)),
+            ],
+          ),
         ),
       ),
     );

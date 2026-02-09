@@ -1,172 +1,123 @@
 import 'package:flutter/material.dart';
-import '../config/theme/app_colors.dart';
-import '../models/scenario.dart';
+import '../core/theme.dart';
+import '../core/models.dart';
+import 'glass_card.dart';
 
 class ScenarioCard extends StatelessWidget {
   final Scenario scenario;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   const ScenarioCard({
     super.key,
     required this.scenario,
-    required this.onTap,
+    this.onTap,
   });
+
+  Color _getColorFromHex(String hex) {
+    final buffer = StringBuffer();
+    if (hex.length == 6 || hex.length == 7) buffer.write('ff');
+    buffer.write(hex.replaceFirst('#', ''));
+    return Color(int.parse(buffer.toString(), radix: 16));
+  }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: scenario.isLocked ? null : onTap,
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 16),
-        decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.darkGray.withOpacity(0.08),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: 56,
-                        height: 56,
-                        decoration: BoxDecoration(
-                          gradient: AppColors.primaryGradient,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Center(
-                          child: Text(
-                            scenario.emoji,
-                            style: const TextStyle(fontSize: 32),
-                          ),
-                        ),
+    final scenarioColor = _getColorFromHex(scenario.colorHex);
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: GlassCard(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Top Row - Icon and Difficulty
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 44,
+                      height: 44,
+                      decoration: BoxDecoration(
+                        color: scenarioColor.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      const SizedBox(width: 16),
-                      // Title and Difficulty
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              scenario.title,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge
-                                  ?.copyWith(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.darkGray,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            _buildDifficultyStars(),
-                          ],
+                      child: Center(
+                        child: Text(
+                          scenario.icon,
+                          style: const TextStyle(fontSize: 24),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  // Description
-                  Text(
-                    scenario.description,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.mediumGray,
-                      height: 1.4,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: scenario.isLocked ? null : onTap,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: scenario.isLocked
-                            ? AppColors.lightGray
-                            : AppColors.primaryTeal,
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            scenario.isLocked ? 'Locked' : 'Start',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          if (!scenario.isLocked) ...[
-                            const SizedBox(width: 8),
-                            const Icon(Icons.arrow_forward, size: 20),
-                          ] else ...[
-                            const SizedBox(width: 8),
-                            const Icon(Icons.lock, size: 20),
-                          ],
-                        ],
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            if (scenario.isLocked)
-              Positioned.fill(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.white.withOpacity(0.7),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.lock,
-                          size: 48,
-                          color: AppColors.mediumGray,
+                    const Spacer(),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.08),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        scenario.difficulty.displayName.toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.textPrimary.withOpacity(0.8),
                         ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Complete 2 scenarios to unlock',
-                          style:
-                          Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: AppColors.mediumGray,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ),
-          ],
+
+                const Spacer(),
+
+                // Title and Description
+                Text(
+                  scenario.title,
+                  style: Theme.of(context).textTheme.titleMedium,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  scenario.description,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontSize: 12,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+
+                const Spacer(),
+
+                // Footer - Duration
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.access_time,
+                      size: 12,
+                      color: AppColors.textSecondary,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      '${scenario.duration} min',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontSize: 11,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ),
       ),
-    );
-  }
-
-  Widget _buildDifficultyStars() {
-    return Row(
-      children: List.generate(5, (index) {
-        return Icon(
-          index < scenario.difficulty ? Icons.star : Icons.star_border,
-          size: 16,
-          color: index < scenario.difficulty
-              ? AppColors.accentYellow
-              : AppColors.lightGray,
-        );
-      }),
     );
   }
 }
