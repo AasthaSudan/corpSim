@@ -3,11 +3,54 @@ import 'package:http/http.dart' as http;
 import 'learning_models.dart';
 import 'models.dart';
 
+/// API Service for Negotium
+/// Connects Flutter app to FastAPI backend with Opik integration
 class APIService {
-  static const String _baseUrl = 'https://api.anthropic.com/v1/messages';
-  static const String _apiKey = 'YOUR_ANTHROPIC_API_KEY'; // TODO: Move to env
-  static const String _model = 'claude-sonnet-4-20250514';
+  // Backend Configuration
+  static const String _baseUrl = 'http://10.0.2.2:8000';  // Change for production
+  static const String _apiVersion = 'api';
 
+  // Timeout configuration
+  static const Duration _timeout = Duration(seconds: 30);
+
+  /// Get full API URL for endpoint
+  static String _getUrl(String endpoint) => '$_baseUrl/$_apiVersion/$endpoint';
+
+  /// Common headers for all requests
+  static Map<String, String> _getHeaders() => {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+  };
+
+  /// Handle HTTP errors
+  static void _handleError(http.Response response) {
+    if (response.statusCode != 200) {
+      throw Exception(
+        'API Error ${response.statusCode}: ${response.body}',
+      );
+    }
+  }
+
+  // ==================== Health Check ====================
+
+  /// Check if backend is online
+  static Future<bool> healthCheck() async {
+    try {
+      final response = await http
+          .get(Uri.parse('$_baseUrl/health'))
+          .timeout(_timeout);
+      return response.statusCode == 200;
+    } catch (e) {
+      print('Health check failed: $e');
+      return false;
+    }
+  }
+
+  // ==================== Socratic Teacher ====================
+
+  /// Get AI Socratic teacher response
+  ///
+  /// This calls the backend which uses Claude with Opik tracing
   static Future<AITeacherResponse> getTeacherResponse({
     required String skillName,
     required String skillType,
@@ -16,231 +59,258 @@ class APIService {
     required double currentKnowledgeScore,
   }) async {
     try {
-      final messages = _buildConversationMessages(
-        conversationHistory,
-        userResponse,
-      );
+      final url = Uri.parse(_getUrl('teacher/respond'));
 
-      final systemPrompt = _buildTeacherSystemPrompt(
-        skillName: skillName,
-        skillType: skillType,
-        knowledgeScore: currentKnowledgeScore,
-      );
+      final requestBody = {
+        'skill_name': skillName,
+        'skill_type': skillType,
+        'conversation_history': conversationHistory
+            .map((msg) => {
+          'role': msg.isUser ? 'user' : 'assistant',
+          'content': msg.text,
+          'timestamp': msg.timestamp?.toIso8601String(),
+        })
+            .toList(),
+        'user_response': userResponse,
+        'current_knowledge_score': currentKnowledgeScore,
+      };
 
-      final response = await http.post(
-        Uri.parse(_baseUrl),
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': _apiKey,
-          'anthropic-version': '2023-06-01',
-        },
-        body: jsonEncode({
-          'model': _model,
-          'max_tokens': 1024,
-          'system': systemPrompt,
-          'messages': messages,
-        }),
-      );
+      print('🔄 Calling teacher API...');
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        final aiText = data['content'][0]['text'];
+      final response = await http
+          .post(
+        url,
+        headers: _getHeaders(),
+        body: jsonEncode(requestBody),
+      )
+          .timeout(_timeout);
 
-        return _parseTeacherResponse(aiText, userResponse);
-      } else {
-        throw Exception('API Error: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('API Service Error: $e');
+      _handleError(response);
+
+      final data = jsonDecode(response.body);
+      print('✅ Teacher response received');
+
       return AITeacherResponse(
-        text: "I'm having trouble connecting. Let's try that again.",
+        text: data['text'],
+        knowledgeGain: (data['knowledge_gain'] as num).toDouble(),
+        feedback: data['feedback'] != null
+            ? MessageFeedback(
+          type: _parseFeedbackType(data['feedback']['type']),
+          message: data['feedback']['message'],
+          hints: data['feedback']['hints'] != null
+              ? List<String>.from(data['feedback']['hints'])
+              : null,
+        )
+            : null,
+        suggestedTopics: data['suggested_topics'] != null
+            ? List<String>.from(data['suggested_topics'])
+            : null,
+        shouldEndSession: data['should_end_session'] ?? false,
+      );
+    } catch (e) {
+      print('❌ Teacher API Error: $e');
+
+      // Friendly fallback response
+      return AITeacherResponse(
+        text: "I'm having trouble connecting to my teaching system. "
+            "Let's try that again in a moment.",
         knowledgeGain: 0.0,
       );
     }
   }
 
-  static String _buildTeacherSystemPrompt({
-    required String skillName,
-    required String skillType,
-    required double knowledgeScore,
-  }) {
-    return '''You are a Socratic teacher specializing in $skillName.
+  // ==================== Quiz Generation ====================
 
-Your teaching philosophy:
-- NEVER give direct answers
-- Ask leading questions that make the student think
-- If student is correct: Acknowledge, then ask deeper question
-- If partially correct: Guide them with hints
-- If incorrect: Don't say "wrong" - ask questions that reveal the gap
-
-Current student knowledge level: ${(knowledgeScore * 100).toStringAsFixed(0)}%
-
-Your goal: Help them discover the answer themselves.
-
-Response format (JSON):
-{
-  "response": "Your Socratic question or guidance",
-  "feedback": {
-    "type": "correct|partially_correct|incorrect|needs_thinking|excellent",
-    "message": "Brief assessment",
-    "hints": ["hint1", "hint2"] // optional
-  },
-  "knowledge_gain": 0.0 to 0.2, // how much they learned from this exchange
-  "suggested_topics": ["topic1"], // optional: what to explore next
-  "should_end_session": false // true if they've mastered the concept
-}
-
-Keep responses conversational and encouraging. Maximum 3 sentences.''';
-  }
-
-  static List<Map<String, dynamic>> _buildConversationMessages(
-      List<Message> history,
-      String newMessage,
-      ) {
-    final messages = <Map<String, dynamic>>[];
-
-    for (final msg in history) {
-      messages.add({
-        'role': msg.isUser ? 'user' : 'assistant',
-        'content': msg.text,
-      });
-    }
-
-    messages.add({
-      'role': 'user',
-      'content': newMessage,
-    });
-
-    return messages;
-  }
-
-  static AITeacherResponse _parseTeacherResponse(
-      String aiText,
-      String userResponse,
-      ) {
-    try {
-      final json = jsonDecode(aiText);
-      return AITeacherResponse.fromJson(json);
-    } catch (e) {
-      return AITeacherResponse(
-        text: aiText,
-        knowledgeGain: _estimateKnowledgeGain(aiText, userResponse),
-        feedback: _inferFeedback(aiText),
-      );
-    }
-  }
-
-  static double _estimateKnowledgeGain(String aiText, String userResponse) {
-    if (aiText.toLowerCase().contains('excellent') ||
-        aiText.toLowerCase().contains('exactly')) {
-      return 0.15;
-    } else if (aiText.toLowerCase().contains('good') ||
-        aiText.toLowerCase().contains('close')) {
-      return 0.10;
-    } else if (aiText.toLowerCase().contains('think about') ||
-        aiText.toLowerCase().contains('consider')) {
-      return 0.05;
-    }
-    return 0.02;
-  }
-
-  static MessageFeedback? _inferFeedback(String aiText) {
-    final lowerText = aiText.toLowerCase();
-
-    if (lowerText.contains('excellent') || lowerText.contains('exactly')) {
-      return MessageFeedback(
-        type: FeedbackType.excellent,
-        message: 'Strong understanding!',
-      );
-    } else if (lowerText.contains('good') || lowerText.contains('close')) {
-      return MessageFeedback(
-          type: FeedbackType.partiallyCorrect,
-          message: 'You are on the right track',
-      );
-    } else if (lowerText.contains('think about') ||
-        lowerText.contains('consider')) {
-      return MessageFeedback(
-        type: FeedbackType.needsThinking,
-        message: 'Keep thinking...',
-      );
-    }
-
-    return null;
-  }
-
+  /// Generate quiz questions for a skill
   static Future<List<QuizQuestion>> generateQuiz({
     required String skillName,
     required String skillType,
     int questionCount = 3,
   }) async {
     try {
-      final response = await http.post(
-        Uri.parse(_baseUrl),
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': _apiKey,
-          'anthropic-version': '2023-06-01',
-        },
-        body: jsonEncode({
-          'model': _model,
-          'max_tokens': 2048,
-          'messages': [
-            {
-              'role': 'user',
-              'content': '''Generate $questionCount quiz questions about $skillName.
+      final url = Uri.parse(_getUrl('quiz/generate'));
 
-Format as JSON array:
-[
-  {
-    "question": "Question text?",
-    "options": ["Option A", "Option B", "Option C", "Option D"],
-    "correct_index": 0,
-    "explanation": "Why this is correct"
-  }
-]
+      final requestBody = {
+        'skill_name': skillName,
+        'skill_type': skillType,
+        'question_count': questionCount,
+      };
 
-Questions should:
-- Test understanding, not memorization
-- Have plausible wrong answers
-- Cover key concepts
-- Be practical/applied
+      print('🔄 Generating quiz...');
 
-Return ONLY the JSON array.'''
-            }
-          ],
-        }),
-      );
+      final response = await http
+          .post(
+        url,
+        headers: _getHeaders(),
+        body: jsonEncode(requestBody),
+      )
+          .timeout(_timeout);
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        final content = data['content'][0]['text'];
+      _handleError(response);
 
-        final jsonMatch = RegExp(r'\[[\s\S]*\]').firstMatch(content);
-        if (jsonMatch != null) {
-          final jsonStr = jsonMatch.group(0)!;
-          final List<dynamic> questionsJson = jsonDecode(jsonStr);
+      final List<dynamic> data = jsonDecode(response.body);
+      print('✅ Quiz generated: ${data.length} questions');
 
-          return questionsJson
-              .asMap()
-              .entries
-              .map((entry) => QuizQuestion(
-            id: entry.key.toString(),
-            question: entry.value['question'],
-            options: List<String>.from(entry.value['options']),
-            correctAnswerIndex: entry.value['correct_index'],
-            explanation: entry.value['explanation'],
-          ))
-              .toList();
-        }
-      }
-
-      return _getFallbackQuestions(skillType);
+      return data
+          .map((q) => QuizQuestion(
+        id: q['id'],
+        question: q['question'],
+        options: List<String>.from(q['options']),
+        correctAnswerIndex: q['correct_answer_index'],
+        explanation: q['explanation'],
+      ))
+          .toList();
     } catch (e) {
-      print('Quiz Generation Error: $e');
+      print('❌ Quiz Generation Error: $e');
+
+      // Return fallback questions
       return _getFallbackQuestions(skillType);
     }
   }
 
+  // ==================== Negotiation Simulation ====================
+
+  /// Get AI opponent response in negotiation
+  static Future<NegotiationResponse> getOpponentResponse({
+    required String scenarioType,
+    required String userMessage,
+    required List<Message> conversationHistory,
+    Map<String, dynamic>? opponentState,
+  }) async {
+    try {
+      final url = Uri.parse(_getUrl('negotiation/respond'));
+
+      final requestBody = {
+        'scenario_type': scenarioType,
+        'user_message': userMessage,
+        'conversation_history': conversationHistory
+            .map((msg) => {
+          'role': msg.isUser ? 'user' : 'assistant',
+          'content': msg.text,
+        })
+            .toList(),
+        'opponent_state': opponentState,
+      };
+
+      print('🔄 Getting opponent response...');
+
+      final response = await http
+          .post(
+        url,
+        headers: _getHeaders(),
+        body: jsonEncode(requestBody),
+      )
+          .timeout(_timeout);
+
+      _handleError(response);
+
+      final data = jsonDecode(response.body);
+      print('✅ Opponent responded');
+
+      return NegotiationResponse(
+        opponentMessage: data['opponent_message'],
+        opponentMood: data['opponent_mood'],
+        patienceLevel: data['patience_level'],
+        leverageScore: (data['leverage_score'] as num).toDouble(),
+        hiddenState: Map<String, dynamic>.from(data['hidden_state']),
+      );
+    } catch (e) {
+      print('❌ Opponent Response Error: $e');
+
+      // Fallback response
+      return NegotiationResponse(
+        opponentMessage: "I need a moment to think about that...",
+        opponentMood: "neutral",
+        patienceLevel: 7,
+        leverageScore: 5.0,
+        hiddenState: {},
+      );
+    }
+  }
+
+  /// Analyze completed negotiation
+  static Future<NegotiationAnalysis> analyzeNegotiation({
+    required String scenarioType,
+    required List<Message> conversationHistory,
+    required Map<String, dynamic> finalOutcome,
+  }) async {
+    try {
+      final url = Uri.parse(_getUrl('negotiation/analyze'));
+
+      final requestBody = {
+        'scenario_type': scenarioType,
+        'conversation_history': conversationHistory
+            .map((msg) => {
+          'role': msg.isUser ? 'user' : 'assistant',
+          'content': msg.text,
+        })
+            .toList(),
+        'final_outcome': finalOutcome,
+      };
+
+      print('🔄 Analyzing negotiation...');
+
+      final response = await http
+          .post(
+        url,
+        headers: _getHeaders(),
+        body: jsonEncode(requestBody),
+      )
+          .timeout(_timeout);
+
+      _handleError(response);
+
+      final data = jsonDecode(response.body);
+      print('✅ Analysis complete');
+
+      return NegotiationAnalysis(
+        overallScore: (data['overall_score'] as num).toDouble(),
+        strengths: List<String>.from(data['strengths']),
+        weaknesses: List<String>.from(data['weaknesses']),
+        keyMoments: List<Map<String, dynamic>>.from(
+          data['key_moments'].map((m) => Map<String, dynamic>.from(m)),
+        ),
+        skillRecommendations: List<String>.from(data['skill_recommendations']),
+        leverageTrajectory: List<double>.from(
+          data['leverage_trajectory'].map((v) => (v as num).toDouble()),
+        ),
+      );
+    } catch (e) {
+      print('❌ Analysis Error: $e');
+
+      // Fallback analysis
+      return NegotiationAnalysis(
+        overallScore: 5.0,
+        strengths: ['You completed the negotiation'],
+        weaknesses: ['Analysis temporarily unavailable'],
+        keyMoments: [],
+        skillRecommendations: ['Practice active listening'],
+        leverageTrajectory: [],
+      );
+    }
+  }
+
+  // ==================== Helper Functions ====================
+
+  /// Parse feedback type from string
+  static FeedbackType _parseFeedbackType(String type) {
+    switch (type.toLowerCase()) {
+      case 'correct':
+        return FeedbackType.correct;
+      case 'partially_correct':
+        return FeedbackType.partiallyCorrect;
+      case 'incorrect':
+        return FeedbackType.incorrect;
+      case 'needs_thinking':
+        return FeedbackType.needsThinking;
+      case 'excellent':
+        return FeedbackType.excellent;
+      default:
+        return FeedbackType.needsThinking;
+    }
+  }
+
+  /// Fallback quiz questions when API fails
   static List<QuizQuestion> _getFallbackQuestions(String skillType) {
     if (skillType.toLowerCase().contains('batna')) {
       return const [
@@ -255,7 +325,8 @@ Return ONLY the JSON array.'''
           ],
           correctAnswerIndex: 0,
           explanation:
-          'BATNA stands for Best Alternative To Negotiated Agreement - your plan B if negotiations fail.',
+          'BATNA stands for Best Alternative To Negotiated Agreement - '
+              'your plan B if negotiations fail.',
         ),
         QuizQuestion(
           id: '2',
@@ -268,7 +339,8 @@ Return ONLY the JSON array.'''
           ],
           correctAnswerIndex: 1,
           explanation:
-          'You should always develop your BATNA before entering negotiations to understand your walk-away power.',
+          'You should always develop your BATNA before entering '
+              'negotiations to understand your walk-away power.',
         ),
         QuizQuestion(
           id: '3',
@@ -281,7 +353,8 @@ Return ONLY the JSON array.'''
           ],
           correctAnswerIndex: 0,
           explanation:
-          'A strong BATNA gives you leverage (you have good alternatives) and confidence (you\'re not desperate).',
+          'A strong BATNA gives you leverage (you have good alternatives) '
+              'and confidence (you\'re not desperate).',
         ),
       ];
     }
@@ -302,4 +375,42 @@ Return ONLY the JSON array.'''
       ),
     ];
   }
+}
+
+// ==================== New Response Models ====================
+
+/// Negotiation opponent response
+class NegotiationResponse {
+  final String opponentMessage;
+  final String opponentMood;
+  final int patienceLevel;
+  final double leverageScore;
+  final Map<String, dynamic> hiddenState;
+
+  NegotiationResponse({
+    required this.opponentMessage,
+    required this.opponentMood,
+    required this.patienceLevel,
+    required this.leverageScore,
+    required this.hiddenState,
+  });
+}
+
+/// Negotiation analysis from Shadow Coach
+class NegotiationAnalysis {
+  final double overallScore;
+  final List<String> strengths;
+  final List<String> weaknesses;
+  final List<Map<String, dynamic>> keyMoments;
+  final List<String> skillRecommendations;
+  final List<double> leverageTrajectory;
+
+  NegotiationAnalysis({
+    required this.overallScore,
+    required this.strengths,
+    required this.weaknesses,
+    required this.keyMoments,
+    required this.skillRecommendations,
+    required this.leverageTrajectory,
+  });
 }

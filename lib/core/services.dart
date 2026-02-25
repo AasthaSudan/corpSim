@@ -9,11 +9,11 @@ class NetworkManager {
   factory NetworkManager() => shared;
   NetworkManager._internal();
 
-  bool useMockData = true;
+  bool useMockData = false;
 
   final Dio _dio = Dio(
     BaseOptions(
-      baseUrl: 'http://localhost:8000',
+      baseUrl: 'http://10.0.2.2:8000',
       connectTimeout: const Duration(seconds: 5),
       receiveTimeout: const Duration(seconds: 5),
       headers: {'Content-Type': 'application/json'},
@@ -68,14 +68,22 @@ class NetworkManager {
     }
 
     try {
-      final payload = APIRequest(
-        scenario: scenario,
-        history: messages.map((e) => e.toApiMessage()).toList(),
-        currentLeverage: leverage,
-        sessionId: sessionID,
+      final response = await _dio.post('/api/negotiation/respond', data: {
+        'scenario_type': scenario,
+        'user_message': messages.last.content,
+        'conversation_history': messages.sublist(0, messages.length - 1)
+            .map((e) => {'role': e.isUser ? 'user' : 'assistant', 'content': e.content})
+            .toList(),
+        'opponent_state': null,
+      });
+
+      return APIResponse(
+        opponentReply: response.data['opponent_message'],
+        newLeverage: (response.data['leverage_score'] as num) / 10.0,
+        newMood: response.data['opponent_mood'],
+        sessionId: sessionID ?? 'session_${DateTime.now().millisecondsSinceEpoch}',
+        coachTip: response.data['hidden_state']?['internal_thoughts'] ?? 'Stay focused on your goals.',
       );
-      final response = await _dio.post('/negotiate', data: payload.toJson());
-      return APIResponse.fromJson(response.data);
     } on DioException catch (e) {
       throw _handleError(e);
     }
