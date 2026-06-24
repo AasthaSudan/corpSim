@@ -73,7 +73,12 @@ class _NegotiationScreenState extends State<NegotiationScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (_) => AnalysisScreen(sessionId: provider.sessionID ?? "mock"),
+          builder: (_) => AnalysisScreen(
+            sessionId: provider.sessionID ?? "mock",
+            scenarioType: widget.scenario.title,
+            chatMessages: provider.messages,
+            outcome: {'final_leverage': provider.leverage, 'mood': provider.mood},
+          ),
         ),
       );
     }
@@ -100,7 +105,12 @@ class _NegotiationScreenState extends State<NegotiationScreen> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => AnalysisScreen(sessionId: navProvider.sessionID ?? "mock"),
+                  builder: (_) => AnalysisScreen(
+                    sessionId: navProvider.sessionID ?? "mock",
+                    scenarioType: widget.scenario.title,
+                    chatMessages: navProvider.messages,
+                    outcome: {'final_leverage': navProvider.leverage, 'mood': navProvider.mood},
+                  ),
                 ),
               );
             },

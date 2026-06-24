@@ -8,10 +8,22 @@ import '../widgets/glass_card.dart';
 import 'learn_screen.dart';
 import 'dashboard_screen.dart';
 
+import '../core/api_service.dart';
+import '../core/learning_models.dart' as lm;
+
 class AnalysisScreen extends StatefulWidget {
   final String sessionId;
+  final String? scenarioType;
+  final List<ChatMessage>? chatMessages;
+  final Map<String, dynamic>? outcome;
 
-  const AnalysisScreen({super.key, required this.sessionId});
+  const AnalysisScreen({
+    super.key, 
+    required this.sessionId,
+    this.scenarioType,
+    this.chatMessages,
+    this.outcome,
+  });
 
   @override
   State<AnalysisScreen> createState() => _AnalysisScreenState();
@@ -39,7 +51,30 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
 
   Future<void> _loadAnalysis() async {
     try {
-      final analysis = await NetworkManager.shared.fetchAnalysis(widget.sessionId);
+      AnalysisResponse? analysis;
+      if (widget.scenarioType != null && widget.chatMessages != null && widget.outcome != null) {
+        final messages = widget.chatMessages!.map((m) => lm.Message(
+          text: m.content,
+          isUser: m.isUser,
+        )).toList();
+
+        final backendResponse = await APIService.analyzeNegotiation(
+          scenarioType: widget.scenarioType!,
+          conversationHistory: messages,
+          finalOutcome: widget.outcome!,
+        );
+
+        analysis = AnalysisResponse(
+          summary: "Analysis Score: ${(backendResponse.overallScore).toInt()}/100",
+          outcome: 'Completed',
+          strengths: backendResponse.strengths.map((s) => AnalysisPoint(point: 'Strength', explanation: s)).toList(),
+          mistakes: backendResponse.weaknesses.map((w) => AnalysisPoint(point: 'Improvement', explanation: w)).toList(),
+          skillGaps: backendResponse.skillRecommendations,
+        );
+      } else {
+        analysis = await NetworkManager.shared.fetchAnalysis(widget.sessionId);
+      }
+
       setState(() {
         _analysis = analysis;
         _isLoading = false;
@@ -56,18 +91,9 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
               point: 'Active Listening',
               explanation: 'You acknowledged the other party\'s concerns effectively.',
             ),
-            AnalysisPoint(
-              point: 'Value Framing',
-              explanation: 'Successfully highlighted the 30% revenue increase.',
-            ),
           ],
-          mistakes: [
-            AnalysisPoint(
-              point: 'Anchoring Low',
-              explanation: 'You started with a lower offer than recommended.',
-            ),
-          ],
-          skillGaps: ['BATNA Development', 'Advanced Negotiation Tactics'],
+          mistakes: [],
+          skillGaps: [],
         );
       });
     }
