@@ -11,6 +11,9 @@ import '../widgets/stat_card.dart';
 import '../widgets/glass_card.dart';
 import 'scenarios_screen.dart';
 import 'analysis_screen.dart';
+import 'skill_roadmap_screen.dart';
+import 'progress_stats_screen.dart';
+import 'gamification_profile_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -165,14 +168,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
           ),
           const SizedBox(height: 32),
-          _buildNavItem(Icons.dashboard, 'Dashboard', true),
-          _buildNavItem(Icons.school, 'Learn', false),
-          _buildNavItem(Icons.psychology, 'Practice', false),
-          _buildNavItem(Icons.insights, 'Analytics', false),
-          _buildNavItem(Icons.emoji_events, 'Achievements', false),
+          _buildNavItem(context, Icons.dashboard, 'Dashboard', true),
+          _buildNavItem(context, Icons.school, 'Learn', false),
+          _buildNavItem(context, Icons.psychology, 'Practice', false),
+          _buildNavItem(context, Icons.insights, 'Analytics', false),
+          _buildNavItem(context, Icons.emoji_events, 'Achievements', false),
           const Spacer(),
           // Settings at bottom
-          _buildNavItem(Icons.settings, 'Settings', false),
+          _buildNavItem(context, Icons.settings, 'Settings', false),
           const SizedBox(height: 24),
         ],
       ),
@@ -193,19 +196,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
       child: Column(
         children: [
           const SizedBox(height: 24),
-          _buildCompactNavItem(Icons.dashboard, true),
-          _buildCompactNavItem(Icons.school, false),
-          _buildCompactNavItem(Icons.psychology, false),
-          _buildCompactNavItem(Icons.insights, false),
+          _buildCompactNavItem(context, Icons.dashboard, 'Dashboard', true),
+          _buildCompactNavItem(context, Icons.school, 'Learn', false),
+          _buildCompactNavItem(context, Icons.psychology, 'Practice', false),
+          _buildCompactNavItem(context, Icons.insights, 'Analytics', false),
           const Spacer(),
-          _buildCompactNavItem(Icons.settings, false),
+          _buildCompactNavItem(context, Icons.settings, 'Settings', false),
           const SizedBox(height: 24),
         ],
       ),
     );
   }
 
-  Widget _buildNavItem(IconData icon, String label, bool isActive) {
+  Widget _buildNavItem(BuildContext context, IconData icon, String label, bool isActive) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
@@ -226,12 +229,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
             fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
           ),
         ),
-        onTap: () {},
+        onTap: () => _handleNavTap(context, label),
       ),
     );
   }
 
-  Widget _buildCompactNavItem(IconData icon, bool isActive) {
+  Widget _buildCompactNavItem(BuildContext context, IconData icon, String label, bool isActive) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       padding: const EdgeInsets.all(12),
@@ -240,12 +243,47 @@ class _DashboardScreenState extends State<DashboardScreen> {
         color: isActive ? null : Colors.white.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Icon(
-        icon,
-        color: Colors.white,
-        size: 24,
+      child: InkWell(
+        onTap: () => _handleNavTap(context, label),
+        child: Icon(
+          icon,
+          color: Colors.white,
+          size: 24,
+        ),
       ),
     );
+  }
+
+  void _handleNavTap(BuildContext context, String label) {
+    if (label == 'Dashboard') return;
+    
+    Widget? destination;
+    switch (label) {
+      case 'Learn':
+        destination = const SkillRoadmapScreen(skillName: 'Active Listening', skillType: 'communication');
+        break;
+      case 'Practice':
+        destination = const ScenariosScreen();
+        break;
+      case 'Analytics':
+        destination = const ProgressStatsScreen(skillName: 'Overall Progress');
+        break;
+      case 'Achievements':
+        destination = const GamificationProfileScreen();
+        break;
+      case 'Settings':
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Settings coming soon')),
+        );
+        return;
+    }
+
+    if (destination != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => destination!),
+      );
+    }
   }
 
   Widget _buildHeader() {
