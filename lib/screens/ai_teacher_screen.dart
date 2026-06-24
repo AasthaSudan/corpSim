@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../core/learning_models.dart';
 import '../core/theme.dart';
-import '../core/models.dart';
 import '../core/api_service.dart';
 import '../widgets/message_bubble.dart';
 import '../widgets/knowledge_indicator.dart';
@@ -150,7 +149,7 @@ class _AITeacherScreenState extends State<AITeacherScreen> {
         backgroundColor: AppColors.surface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
-          side: BorderSide(color: AppColors.teal.withOpacity(0.3)),
+          side: BorderSide(color: AppColors.teal.withValues(alpha: 0.3)),
         ),
         title: const Row(
           children: [
@@ -285,7 +284,7 @@ class _AITeacherScreenState extends State<AITeacherScreen> {
                           margin: const EdgeInsets.only(left: 16, top: 8),
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: AppColors.surface.withOpacity(0.5),
+                            color: AppColors.surface.withValues(alpha: 0.5),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Row(
@@ -324,7 +323,7 @@ class _AITeacherScreenState extends State<AITeacherScreen> {
                   color: AppColors.surface,
                   border: Border(
                     top: BorderSide(
-                      color: Colors.white.withOpacity(0.05),
+                      color: Colors.white.withValues(alpha: 0.05),
                     ),
                   ),
                 ),
@@ -340,7 +339,7 @@ class _AITeacherScreenState extends State<AITeacherScreen> {
                             color: AppColors.textTertiary,
                           ),
                           filled: true,
-                          fillColor: Colors.white.withOpacity(0.05),
+                          fillColor: Colors.white.withValues(alpha: 0.05),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(24),
                             borderSide: BorderSide.none,

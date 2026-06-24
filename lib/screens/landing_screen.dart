@@ -68,7 +68,7 @@ class _LandingScreenState extends State<LandingScreen>
                     ).animate(onPlay: (controller) => controller.repeat())
                         .shimmer(
                       duration: 3000.ms,
-                      color: Colors.white.withOpacity(0.1),
+                      color: Colors.white.withValues(alpha: 0.1),
                     )
                         .blur(begin: const Offset(60, 60), end: const Offset(60, 60)),
                   );
@@ -93,7 +93,7 @@ class _LandingScreenState extends State<LandingScreen>
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.teal.withOpacity(0.5),
+                            color: AppColors.teal.withValues(alpha: 0.5),
                             blurRadius: 30,
                             spreadRadius: 5,
                           ),
@@ -113,7 +113,7 @@ class _LandingScreenState extends State<LandingScreen>
                         .then()
                         .shimmer(
                       duration: 2000.ms,
-                      color: Colors.white.withOpacity(0.3),
+                      color: Colors.white.withValues(alpha: 0.3),
                     ),
 
                     const SizedBox(height: 40),
@@ -167,7 +167,7 @@ class _LandingScreenState extends State<LandingScreen>
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
-            color: AppColors.teal.withOpacity(0.3),
+            color: AppColors.teal.withValues(alpha: 0.3),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),

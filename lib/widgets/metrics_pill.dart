@@ -53,7 +53,7 @@ class MetricPill extends StatelessWidget {
               height: 6,
               child: LinearProgressIndicator(
                 value: value,
-                backgroundColor: Colors.white.withOpacity(0.1),
+                backgroundColor: Colors.white.withValues(alpha: 0.1),
                 valueColor: AlwaysStoppedAnimation<Color>(color),
               ),
             ),

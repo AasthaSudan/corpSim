@@ -212,12 +212,12 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
               height: 80,
               decoration: BoxDecoration(
                 gradient: isSuccess ? AppGradients.teal : LinearGradient(
-                  colors: [AppColors.error, AppColors.error.withOpacity(0.7)],
+                  colors: [AppColors.error, AppColors.error.withValues(alpha: 0.7)],
                 ),
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: (isSuccess ? AppColors.teal : AppColors.error).withOpacity(0.5),
+                    color: (isSuccess ? AppColors.teal : AppColors.error).withValues(alpha: 0.5),
                     blurRadius: 20,
                   ),
                 ],
@@ -268,7 +268,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                     drawVerticalLine: false,
                     getDrawingHorizontalLine: (value) {
                       return FlLine(
-                        color: Colors.white.withOpacity(0.1),
+                        color: Colors.white.withValues(alpha: 0.1),
                         strokeWidth: 1,
                       );
                     },
@@ -319,7 +319,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                         show: true,
                         gradient: LinearGradient(
                           colors: [
-                            AppColors.purple.withOpacity(0.3),
+                            AppColors.purple.withValues(alpha: 0.3),
                             Colors.transparent,
                           ],
                           begin: Alignment.topCenter,
@@ -369,9 +369,9 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.03),
+        color: Colors.white.withValues(alpha: 0.03),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
       ),
       child: Row(
         children: [
@@ -450,7 +450,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
               return Column(
                 children: [
                   if (index > 0)
-                    Divider(color: Colors.white.withOpacity(0.1), height: 24),
+                    Divider(color: Colors.white.withValues(alpha: 0.1), height: 24),
                   _buildPoint(point, color),
                 ],
               );

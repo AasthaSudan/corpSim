@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../core/theme.dart';
-import '../widgets/glass_card.dart';
 
 class ProgressStatsScreen extends StatefulWidget {
   final String skillName;
@@ -173,7 +172,7 @@ class _ProgressStatsScreenState extends State<ProgressStatsScreen> {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: color.withOpacity(0.15),
+                color: color.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Icon(icon, color: color, size: 22),
@@ -244,7 +243,7 @@ class _ProgressStatsScreenState extends State<ProgressStatsScreen> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
-                    color: AppColors.surface.withOpacity(0.3),
+                    color: AppColors.surface.withValues(alpha: 0.3),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Row(
@@ -278,7 +277,7 @@ class _ProgressStatsScreenState extends State<ProgressStatsScreen> {
                     horizontalInterval: 1,
                     getDrawingHorizontalLine: (value) {
                       return FlLine(
-                        color: AppColors.surface.withOpacity(0.2),
+                        color: AppColors.surface.withValues(alpha: 0.2),
                         strokeWidth: 1,
                       );
                     },
@@ -354,8 +353,8 @@ class _ProgressStatsScreenState extends State<ProgressStatsScreen> {
                         show: true,
                         gradient: LinearGradient(
                           colors: [
-                            AppColors.teal.withOpacity(0.2),
-                            AppColors.purple.withOpacity(0.05),
+                            AppColors.teal.withValues(alpha: 0.2),
+                            AppColors.purple.withValues(alpha: 0.05),
                           ],
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
@@ -414,11 +413,11 @@ class _ProgressStatsScreenState extends State<ProgressStatsScreen> {
                       decoration: BoxDecoration(
                         color: isCompleted
                             ? AppColors.success
-                            : AppColors.surface.withOpacity(0.3),
+                            : AppColors.surface.withValues(alpha: 0.3),
                         borderRadius: BorderRadius.circular(10),
                         boxShadow: isCompleted ? [
                           BoxShadow(
-                            color: AppColors.success.withOpacity(0.3),
+                            color: AppColors.success.withValues(alpha: 0.3),
                             blurRadius: 8,
                             spreadRadius: 1,
                           ),
@@ -438,9 +437,9 @@ class _ProgressStatsScreenState extends State<ProgressStatsScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.amber.withOpacity(0.1),
+                color: AppColors.amber.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppColors.amber.withOpacity(0.3)),
+                border: Border.all(color: AppColors.amber.withValues(alpha: 0.3)),
               ),
               child: Row(
                 children: [
@@ -528,8 +527,8 @@ class _ProgressStatsScreenState extends State<ProgressStatsScreen> {
   Widget _buildAchievementCard(Achievement achievement) {
     return GlassContainer(
       color: achievement.unlocked
-          ? achievement.color.withOpacity(0.05)
-          : AppColors.surface.withOpacity(0.02),
+          ? achievement.color.withValues(alpha: 0.05)
+          : AppColors.surface.withValues(alpha: 0.02),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
@@ -539,15 +538,15 @@ class _ProgressStatsScreenState extends State<ProgressStatsScreen> {
               height: 56,
               decoration: BoxDecoration(
                 color: achievement.unlocked
-                    ? achievement.color.withOpacity(0.15)
-                    : AppColors.surface.withOpacity(0.3),
+                    ? achievement.color.withValues(alpha: 0.15)
+                    : AppColors.surface.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(14),
               ),
               child: Icon(
                 achievement.icon,
                 color: achievement.unlocked
                     ? achievement.color
-                    : AppColors.textSecondary.withOpacity(0.5),
+                    : AppColors.textSecondary.withValues(alpha: 0.5),
                 size: 28,
               ),
             ),
@@ -562,7 +561,7 @@ class _ProgressStatsScreenState extends State<ProgressStatsScreen> {
                       fontWeight: FontWeight.w700,
                       color: achievement.unlocked
                           ? AppColors.textPrimary
-                          : AppColors.textSecondary.withOpacity(0.5),
+                          : AppColors.textSecondary.withValues(alpha: 0.5),
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -586,7 +585,7 @@ class _ProgressStatsScreenState extends State<ProgressStatsScreen> {
             else
               Icon(
                 Icons.lock_rounded,
-                color: AppColors.textSecondary.withOpacity(0.3),
+                color: AppColors.textSecondary.withValues(alpha: 0.3),
                 size: 20,
               ),
           ],
@@ -597,7 +596,7 @@ class _ProgressStatsScreenState extends State<ProgressStatsScreen> {
 
   Widget _buildInsightsCard() {
     return GlassContainer(
-      color: AppColors.info.withOpacity(0.05),
+      color: AppColors.info.withValues(alpha: 0.05),
       child: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
@@ -661,7 +660,7 @@ class _ProgressStatsScreenState extends State<ProgressStatsScreen> {
           width: 32,
           height: 32,
           decoration: BoxDecoration(
-            color: color.withOpacity(0.15),
+            color: color.withValues(alpha: 0.15),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(icon, color: color, size: 18),

@@ -105,14 +105,14 @@ class _GamificationProfileScreenState extends State<GamificationProfileScreen> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: Colors.white.withOpacity(0.3),
+                      color: Colors.white.withValues(alpha: 0.3),
                       width: 4,
                     ),
                   ),
                   child: CircularProgressIndicator(
                     value: xpProgress,
                     strokeWidth: 4,
-                    backgroundColor: Colors.white.withOpacity(0.2),
+                    backgroundColor: Colors.white.withValues(alpha: 0.2),
                     valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
                   ),
                 ),
@@ -120,7 +120,7 @@ class _GamificationProfileScreenState extends State<GamificationProfileScreen> {
                   width: 100,
                   height: 100,
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
+                    color: Colors.white.withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                   ),
                   child: Center(
@@ -153,7 +153,7 @@ class _GamificationProfileScreenState extends State<GamificationProfileScreen> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
+                color: Colors.white.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
@@ -184,7 +184,7 @@ class _GamificationProfileScreenState extends State<GamificationProfileScreen> {
                     Text(
                       '$xpForNextLevel XP',
                       style: TextStyle(
-                        color: Colors.white.withOpacity(0.7),
+                        color: Colors.white.withValues(alpha: 0.7),
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
                       ),
@@ -196,7 +196,7 @@ class _GamificationProfileScreenState extends State<GamificationProfileScreen> {
                   borderRadius: BorderRadius.circular(10),
                   child: LinearProgressIndicator(
                     value: xpProgress,
-                    backgroundColor: Colors.white.withOpacity(0.2),
+                    backgroundColor: Colors.white.withValues(alpha: 0.2),
                     valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
                     minHeight: 12,
                   ),
@@ -205,7 +205,7 @@ class _GamificationProfileScreenState extends State<GamificationProfileScreen> {
                 Text(
                   '${xpForNextLevel - currentXP} XP to Level ${currentLevel + 1}',
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withValues(alpha: 0.9),
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                   ),
@@ -261,7 +261,7 @@ class _GamificationProfileScreenState extends State<GamificationProfileScreen> {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: color.withOpacity(0.15),
+                color: color.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Icon(icon, color: color, size: 22),
@@ -381,10 +381,10 @@ class _GamificationProfileScreenState extends State<GamificationProfileScreen> {
 
     return GlassContainer(
       color: badge.unlocked
-          ? rarityColor.withOpacity(0.05)
-          : AppColors.surface.withOpacity(0.02),
+          ? rarityColor.withValues(alpha: 0.05)
+          : AppColors.surface.withValues(alpha: 0.02),
       border: badge.unlocked
-          ? Border.all(color: rarityColor.withOpacity(0.3), width: 2)
+          ? Border.all(color: rarityColor.withValues(alpha: 0.3), width: 2)
           : null,
       child: Padding(
         padding: const EdgeInsets.all(12),
@@ -396,12 +396,12 @@ class _GamificationProfileScreenState extends State<GamificationProfileScreen> {
               height: 60,
               decoration: BoxDecoration(
                 color: badge.unlocked
-                    ? rarityColor.withOpacity(0.15)
-                    : AppColors.surface.withOpacity(0.3),
+                    ? rarityColor.withValues(alpha: 0.15)
+                    : AppColors.surface.withValues(alpha: 0.3),
                 shape: BoxShape.circle,
                 boxShadow: badge.unlocked ? [
                   BoxShadow(
-                    color: rarityColor.withOpacity(0.3),
+                    color: rarityColor.withValues(alpha: 0.3),
                     blurRadius: 12,
                     spreadRadius: 2,
                   ),
@@ -414,7 +414,7 @@ class _GamificationProfileScreenState extends State<GamificationProfileScreen> {
                     fontSize: 32,
                     color: badge.unlocked
                         ? null
-                        : Colors.white.withOpacity(0.3),
+                        : Colors.white.withValues(alpha: 0.3),
                   ),
                 ),
               ),
@@ -426,7 +426,7 @@ class _GamificationProfileScreenState extends State<GamificationProfileScreen> {
                 fontWeight: FontWeight.w700,
                 color: badge.unlocked
                     ? AppColors.textPrimary
-                    : AppColors.textSecondary.withOpacity(0.5),
+                    : AppColors.textSecondary.withValues(alpha: 0.5),
               ),
               textAlign: TextAlign.center,
               maxLines: 2,
@@ -436,7 +436,7 @@ class _GamificationProfileScreenState extends State<GamificationProfileScreen> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(
-                color: rarityColor.withOpacity(0.15),
+                color: rarityColor.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
@@ -481,8 +481,8 @@ class _GamificationProfileScreenState extends State<GamificationProfileScreen> {
   Widget _buildBadgeItem(Badge badge) {
     return GlassContainer(
       color: badge.earned
-          ? AppColors.teal.withOpacity(0.05)
-          : AppColors.surface.withOpacity(0.02),
+          ? AppColors.teal.withValues(alpha: 0.05)
+          : AppColors.surface.withValues(alpha: 0.02),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Row(
@@ -492,7 +492,7 @@ class _GamificationProfileScreenState extends State<GamificationProfileScreen> {
               badge.icon,
               style: TextStyle(
                 fontSize: 24,
-                color: badge.earned ? null : Colors.white.withOpacity(0.3),
+                color: badge.earned ? null : Colors.white.withValues(alpha: 0.3),
               ),
             ),
             const SizedBox(width: 8),
@@ -503,7 +503,7 @@ class _GamificationProfileScreenState extends State<GamificationProfileScreen> {
                 fontSize: 14,
                 color: badge.earned
                     ? AppColors.textPrimary
-                    : AppColors.textSecondary.withOpacity(0.5),
+                    : AppColors.textSecondary.withValues(alpha: 0.5),
               ),
             ),
           ],
@@ -540,10 +540,10 @@ class _GamificationProfileScreenState extends State<GamificationProfileScreen> {
   Widget _buildMilestoneCard(LevelMilestone milestone) {
     return GlassContainer(
       color: milestone.reached
-          ? AppColors.success.withOpacity(0.05)
+          ? AppColors.success.withValues(alpha: 0.05)
           : Colors.transparent,
       border: milestone.level == currentLevel
-          ? Border.all(color: AppColors.teal.withOpacity(0.5), width: 2)
+          ? Border.all(color: AppColors.teal.withValues(alpha: 0.5), width: 2)
           : null,
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -558,7 +558,7 @@ class _GamificationProfileScreenState extends State<GamificationProfileScreen> {
                     : null,
                 color: milestone.reached
                     ? null
-                    : AppColors.surface.withOpacity(0.3),
+                    : AppColors.surface.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Center(
@@ -569,7 +569,7 @@ class _GamificationProfileScreenState extends State<GamificationProfileScreen> {
                     fontWeight: FontWeight.w900,
                     color: milestone.reached
                         ? Colors.white
-                        : AppColors.textSecondary.withOpacity(0.5),
+                        : AppColors.textSecondary.withValues(alpha: 0.5),
                   ),
                 ),
               ),
@@ -585,7 +585,7 @@ class _GamificationProfileScreenState extends State<GamificationProfileScreen> {
                       fontWeight: FontWeight.w700,
                       color: milestone.reached
                           ? AppColors.textPrimary
-                          : AppColors.textSecondary.withOpacity(0.5),
+                          : AppColors.textSecondary.withValues(alpha: 0.5),
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -605,7 +605,7 @@ class _GamificationProfileScreenState extends State<GamificationProfileScreen> {
             else if (milestone.level == currentLevel)
               Icon(Icons.radio_button_checked_rounded, color: AppColors.teal, size: 24)
             else
-              Icon(Icons.lock_rounded, color: AppColors.textSecondary.withOpacity(0.3), size: 20),
+              Icon(Icons.lock_rounded, color: AppColors.textSecondary.withValues(alpha: 0.3), size: 20),
           ],
         ),
       ),

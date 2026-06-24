@@ -7,7 +7,6 @@ import '../core/theme.dart';
 import '../core/services.dart';
 import '../core/models.dart';
 import '../utils/responsive_helper.dart';
-import '../utils/responsive_helper.dart';
 import '../widgets/stat_card.dart';
 import '../widgets/glass_card.dart';
 import 'scenarios_screen.dart';
@@ -125,10 +124,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Container(
       width: 280,
       decoration: BoxDecoration(
-        color: AppColors.surface.withOpacity(0.5),
+        color: AppColors.surface.withValues(alpha: 0.5),
         border: Border(
           right: BorderSide(
-            color: Colors.white.withOpacity(0.1),
+            color: Colors.white.withValues(alpha: 0.1),
           ),
         ),
       ),
@@ -184,10 +183,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Container(
       width: 80,
       decoration: BoxDecoration(
-        color: AppColors.surface.withOpacity(0.5),
+        color: AppColors.surface.withValues(alpha: 0.5),
         border: Border(
           right: BorderSide(
-            color: Colors.white.withOpacity(0.1),
+            color: Colors.white.withValues(alpha: 0.1),
           ),
         ),
       ),
@@ -238,7 +237,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         gradient: isActive ? AppGradients.teal : null,
-        color: isActive ? null : Colors.white.withOpacity(0.05),
+        color: isActive ? null : Colors.white.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Icon(
@@ -282,7 +281,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.purple.withOpacity(0.4),
+                      color: AppColors.purple.withValues(alpha: 0.4),
                       blurRadius: 8,
                     ),
                   ],
@@ -400,7 +399,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 const SizedBox(width: 16),
                 Icon(
                   Icons.chevron_right,
-                  color: AppColors.textSecondary.withOpacity(0.3),
+                  color: AppColors.textSecondary.withValues(alpha: 0.3),
                 ),
               ],
             ),
@@ -454,7 +453,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           Icon(
                             Icons.inbox_outlined,
                             size: 64,
-                            color: AppColors.textSecondary.withOpacity(0.3),
+                            color: AppColors.textSecondary.withValues(alpha: 0.3),
                           ),
                           const SizedBox(height: 16),
                           Text(
@@ -519,7 +518,7 @@ class _ActivityRow extends StatelessWidget {
                 color: AppColors.surface,
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: Colors.white.withOpacity(0.1),
+                  color: Colors.white.withValues(alpha: 0.1),
                 ),
               ),
               child: const Icon(
@@ -557,7 +556,7 @@ class _ActivityRow extends StatelessWidget {
                 const SizedBox(height: 4),
                 Icon(
                   Icons.chevron_right,
-                  color: AppColors.textSecondary.withOpacity(0.3),
+                  color: AppColors.textSecondary.withValues(alpha: 0.3),
                   size: 16,
                 ),
               ],

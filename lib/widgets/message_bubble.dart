@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../core/learning_models.dart';
-import '../core/models.dart';
 import '../core/theme.dart';
 
 class MessageBubble extends StatelessWidget {
@@ -34,7 +33,7 @@ class MessageBubble extends StatelessWidget {
                 gradient: message.isUser
                     ? AppGradients.teal
                     : null,
-                color: message.isUser ? null : Colors.white.withOpacity(0.1),
+                color: message.isUser ? null : Colors.white.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.only(
                   topLeft: const Radius.circular(20),
                   topRight: const Radius.circular(20),
@@ -44,7 +43,7 @@ class MessageBubble extends StatelessWidget {
                 border: message.isUser
                     ? null
                     : Border.all(
-                  color: Colors.white.withOpacity(0.1),
+                  color: Colors.white.withValues(alpha: 0.1),
                 ),
               ),
               child: Text(
@@ -66,7 +65,7 @@ class MessageBubble extends StatelessWidget {
               child: Text(
                 _formatTime(message.timestamp),
                 style: TextStyle(
-                  color: Colors.white.withOpacity(0.5),
+                  color: Colors.white.withValues(alpha: 0.5),
                   fontSize: 11,
                 ),
               ),
@@ -119,10 +118,10 @@ class MessageBubble extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: feedbackColor.withOpacity(0.15),
+        color: feedbackColor.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: feedbackColor.withOpacity(0.3),
+          color: feedbackColor.withValues(alpha: 0.3),
         ),
       ),
       child: Column(
@@ -147,7 +146,7 @@ class MessageBubble extends StatelessWidget {
             Text(
               feedback.message,
               style: TextStyle(
-                color: Colors.white.withOpacity(0.9),
+                color: Colors.white.withValues(alpha: 0.9),
                 fontSize: 13,
               ),
             ),
@@ -167,7 +166,7 @@ class MessageBubble extends StatelessWidget {
                     child: Text(
                       hint,
                       style: TextStyle(
-                        color: Colors.white.withOpacity(0.8),
+                        color: Colors.white.withValues(alpha: 0.8),
                         fontSize: 12,
                         fontStyle: FontStyle.italic,
                       ),

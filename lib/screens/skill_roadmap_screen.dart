@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../core/theme.dart';
-import '../core/models.dart';
 import '../widgets/glass_card.dart';
 import 'daily_task_screen.dart';
 import 'progress_stats_screen.dart';
@@ -206,7 +205,7 @@ class _SkillRoadmapScreenState extends State<SkillRoadmapScreen> {
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.teal.withOpacity(0.3),
+                            color: AppColors.teal.withValues(alpha: 0.3),
                             blurRadius: 12,
                             offset: const Offset(0, 4),
                           ),
@@ -260,7 +259,7 @@ class _SkillRoadmapScreenState extends State<SkillRoadmapScreen> {
                       borderRadius: BorderRadius.circular(10),
                       child: LinearProgressIndicator(
                         value: progressPercent,
-                        backgroundColor: AppColors.surface.withOpacity(0.3),
+                        backgroundColor: AppColors.surface.withValues(alpha: 0.3),
                         valueColor: const AlwaysStoppedAnimation<Color>(AppColors.teal),
                         minHeight: 12,
                       ),
@@ -275,9 +274,9 @@ class _SkillRoadmapScreenState extends State<SkillRoadmapScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     _buildStatItem(Icons.emoji_events_rounded, 'Level $currentLevel', AppColors.amber),
-                    Container(width: 1, height: 40, color: AppColors.surface.withOpacity(0.3)),
+                    Container(width: 1, height: 40, color: AppColors.surface.withValues(alpha: 0.3)),
                     _buildStatItem(Icons.stars_rounded, '$totalXP XP', AppColors.purple),
-                    Container(width: 1, height: 40, color: AppColors.surface.withOpacity(0.3)),
+                    Container(width: 1, height: 40, color: AppColors.surface.withValues(alpha: 0.3)),
                     _buildStatItem(Icons.check_circle_rounded, '$completedDays Done', AppColors.success),
                   ],
                 ),
@@ -329,7 +328,7 @@ class _SkillRoadmapScreenState extends State<SkillRoadmapScreen> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
+                      color: Colors.white.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
@@ -346,7 +345,7 @@ class _SkillRoadmapScreenState extends State<SkillRoadmapScreen> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
+                      color: Colors.white.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Row(
@@ -419,7 +418,7 @@ class _SkillRoadmapScreenState extends State<SkillRoadmapScreen> {
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
+                      color: Colors.white.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: const Icon(Icons.lightbulb_outline_rounded, color: Colors.white, size: 20),
@@ -489,7 +488,7 @@ class _SkillRoadmapScreenState extends State<SkillRoadmapScreen> {
       statusColor = AppColors.teal;
       statusIcon = Icons.play_circle_filled_rounded;
     } else if (task.isLocked) {
-      statusColor = AppColors.textSecondary.withOpacity(0.3);
+      statusColor = AppColors.textSecondary.withValues(alpha: 0.3);
       statusIcon = Icons.lock_rounded;
     } else {
       statusColor = AppColors.amber;
@@ -498,12 +497,12 @@ class _SkillRoadmapScreenState extends State<SkillRoadmapScreen> {
 
     return GlassContainer(
       color: task.isCurrent
-          ? AppColors.teal.withOpacity(0.05)
+          ? AppColors.teal.withValues(alpha: 0.05)
           : task.isLocked
-          ? AppColors.surface.withOpacity(0.02)
+          ? AppColors.surface.withValues(alpha: 0.02)
           : Colors.transparent,
       border: task.isCurrent
-          ? Border.all(color: AppColors.teal.withOpacity(0.5), width: 2)
+          ? Border.all(color: AppColors.teal.withValues(alpha: 0.5), width: 2)
           : null,
       child: InkWell(
         onTap: task.isLocked ? null : () {
@@ -524,10 +523,10 @@ class _SkillRoadmapScreenState extends State<SkillRoadmapScreen> {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: statusColor.withOpacity(0.15),
+                  color: statusColor.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: statusColor.withOpacity(0.3),
+                    color: statusColor.withValues(alpha: 0.3),
                     width: 2,
                   ),
                 ),
@@ -554,7 +553,7 @@ class _SkillRoadmapScreenState extends State<SkillRoadmapScreen> {
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         fontWeight: FontWeight.w700,
                         color: task.isLocked
-                            ? AppColors.textSecondary.withOpacity(0.5)
+                            ? AppColors.textSecondary.withValues(alpha: 0.5)
                             : AppColors.textPrimary,
                       ),
                       maxLines: 2,
@@ -566,7 +565,7 @@ class _SkillRoadmapScreenState extends State<SkillRoadmapScreen> {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                           decoration: BoxDecoration(
-                            color: _getDifficultyColor(task.difficulty).withOpacity(0.15),
+                            color: _getDifficultyColor(task.difficulty).withValues(alpha: 0.15),
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(

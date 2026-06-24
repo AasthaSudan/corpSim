@@ -1,13 +1,14 @@
+// ignore_for_file: avoid_print
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'learning_models.dart';
-import 'models.dart';
 
 /// API Service for Negotium
 /// Connects Flutter app to FastAPI backend with Opik integration
 class APIService {
   // Backend Configuration
-  static const String _baseUrl = 'http://10.0.2.2:8000';  // Change for production
+  static String get _baseUrl => kIsWeb ? 'http://127.0.0.1:8000' : 'http://10.0.2.2:8000';  // Change for production
   static const String _apiVersion = 'api';
 
   // Timeout configuration
@@ -68,7 +69,7 @@ class APIService {
             .map((msg) => {
           'role': msg.isUser ? 'user' : 'assistant',
           'content': msg.text,
-          'timestamp': msg.timestamp?.toIso8601String(),
+          'timestamp': msg.timestamp.toIso8601String(),
         })
             .toList(),
         'user_response': userResponse,

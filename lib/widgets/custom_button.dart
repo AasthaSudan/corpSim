@@ -44,7 +44,7 @@ class CustomButton extends StatelessWidget {
             color: (gradient != null
                 ? AppColors.teal
                 : AppColors.teal)
-                .withOpacity(0.3),
+                .withValues(alpha: 0.3),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),

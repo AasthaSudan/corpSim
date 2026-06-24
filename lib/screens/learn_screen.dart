@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../core/theme.dart';
-import '../core/models.dart' hide LearningResource;
-import '../core/learning_models.dart';
 import '../widgets/glass_card.dart';
 import 'ai_teacher_screen.dart';
 import 'skill_quiz_screen.dart';
@@ -294,7 +292,7 @@ class _LearnSkillScreenState extends State<LearnSkillScreen> with TickerProvider
       leading: Container(
         margin: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(12),
         ),
         child: IconButton(
@@ -309,9 +307,9 @@ class _LearnSkillScreenState extends State<LearnSkillScreen> with TickerProvider
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
             decoration: BoxDecoration(
-              color: AppColors.teal.withOpacity(0.3),
+              color: AppColors.teal.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: AppColors.teal.withOpacity(0.5)),
+              border: Border.all(color: AppColors.teal.withValues(alpha: 0.5)),
             ),
             child: const Text(
               "ACTIVE MODULE",
@@ -345,7 +343,7 @@ class _LearnSkillScreenState extends State<LearnSkillScreen> with TickerProvider
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: AppColors.teal.withOpacity(0.3),
+                color: AppColors.teal.withValues(alpha: 0.3),
                 blurRadius: 8,
                 spreadRadius: 1,
               ),
@@ -372,7 +370,7 @@ class _LearnSkillScreenState extends State<LearnSkillScreen> with TickerProvider
                   child: CircularProgressIndicator(
                     value: 0.65,
                     strokeWidth: 4,
-                    backgroundColor: Colors.white.withOpacity(0.1),
+                    backgroundColor: Colors.white.withValues(alpha: 0.1),
                     valueColor: const AlwaysStoppedAnimation<Color>(AppColors.teal),
                   ),
                 ),
@@ -439,7 +437,7 @@ class _LearnSkillScreenState extends State<LearnSkillScreen> with TickerProvider
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
+                        color: Colors.white.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(14),
                       ),
                       child: const Icon(Icons.auto_awesome_motion_rounded, color: Colors.white, size: 32),
@@ -476,7 +474,7 @@ class _LearnSkillScreenState extends State<LearnSkillScreen> with TickerProvider
                 Container(
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.15),
+                    color: Colors.white.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
@@ -531,7 +529,7 @@ class _LearnSkillScreenState extends State<LearnSkillScreen> with TickerProvider
           subtitle: 'Interactive learning with AI guidance',
           icon: Icons.psychology_rounded,
           gradient: LinearGradient(
-            colors: [AppColors.purple.withOpacity(0.8), AppColors.purple],
+            colors: [AppColors.purple.withValues(alpha: 0.8), AppColors.purple],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -602,7 +600,7 @@ class _LearnSkillScreenState extends State<LearnSkillScreen> with TickerProvider
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
+                    color: Colors.white.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Icon(icon, color: Colors.white, size: 40),
@@ -647,7 +645,7 @@ class _LearnSkillScreenState extends State<LearnSkillScreen> with TickerProvider
                       Text(
                         subtitle,
                         style: TextStyle(
-                          color: Colors.white.withOpacity(0.8),
+                          color: Colors.white.withValues(alpha: 0.8),
                           fontSize: 13,
                         ),
                       ),
@@ -658,7 +656,7 @@ class _LearnSkillScreenState extends State<LearnSkillScreen> with TickerProvider
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
+                    color: Colors.white.withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(Icons.arrow_forward_rounded, color: Colors.white, size: 18),
@@ -693,7 +691,7 @@ class _LearnSkillScreenState extends State<LearnSkillScreen> with TickerProvider
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: color.withOpacity(0.2),
+                    color: color.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Icon(icon, color: color, size: 28),
@@ -712,7 +710,7 @@ class _LearnSkillScreenState extends State<LearnSkillScreen> with TickerProvider
                   subtitle,
                   style: TextStyle(
                     fontSize: 11,
-                    color: Colors.white.withOpacity(0.6),
+                    color: Colors.white.withValues(alpha: 0.6),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -731,7 +729,7 @@ class _LearnSkillScreenState extends State<LearnSkillScreen> with TickerProvider
       ),
     );
   }
-
+  // ignore: unused_element
   Widget _buildQuickActionChips(BuildContext context) {
     final actions = [
       {'icon': Icons.bookmark_outline_rounded, 'label': 'Saved', 'color': AppColors.teal},
@@ -835,9 +833,9 @@ class _LearnSkillScreenState extends State<LearnSkillScreen> with TickerProvider
                         Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: (res['c'] as Color).withOpacity(0.2),
+                            color: (res['c'] as Color).withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: (res['c'] as Color).withOpacity(0.5)),
+                            border: Border.all(color: (res['c'] as Color).withValues(alpha: 0.5)),
                           ),
                           child: Row(
                             children: [
@@ -860,7 +858,7 @@ class _LearnSkillScreenState extends State<LearnSkillScreen> with TickerProvider
                         Text(
                           'This will open in your browser:',
                           style: TextStyle(
-                            color: Colors.white.withOpacity(0.5),
+                            color: Colors.white.withValues(alpha: 0.5),
                             fontSize: 11,
                           ),
                         ),
@@ -868,7 +866,7 @@ class _LearnSkillScreenState extends State<LearnSkillScreen> with TickerProvider
                         Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.05),
+                            color: Colors.white.withValues(alpha: 0.05),
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Row(
@@ -991,8 +989,8 @@ class _LearnSkillScreenState extends State<LearnSkillScreen> with TickerProvider
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               colors: [
-                                (res['c'] as Color).withOpacity(0.3),
-                                (res['c'] as Color).withOpacity(0.1),
+                                (res['c'] as Color).withValues(alpha: 0.3),
+                                (res['c'] as Color).withValues(alpha: 0.1),
                               ],
                             ),
                             borderRadius: BorderRadius.circular(16),
@@ -1021,7 +1019,7 @@ class _LearnSkillScreenState extends State<LearnSkillScreen> with TickerProvider
                               Text(
                                 res['desc']!,
                                 style: TextStyle(
-                                  color: Colors.white.withOpacity(0.6),
+                                  color: Colors.white.withValues(alpha: 0.6),
                                   fontSize: 12,
                                 ),
                               ),
@@ -1031,10 +1029,10 @@ class _LearnSkillScreenState extends State<LearnSkillScreen> with TickerProvider
                                   Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                     decoration: BoxDecoration(
-                                      color: (res['c'] as Color).withOpacity(0.2),
+                                      color: (res['c'] as Color).withValues(alpha: 0.2),
                                       borderRadius: BorderRadius.circular(6),
                                       border: Border.all(
-                                        color: (res['c'] as Color).withOpacity(0.5),
+                                        color: (res['c'] as Color).withValues(alpha: 0.5),
                                       ),
                                     ),
                                     child: Text(
@@ -1048,12 +1046,12 @@ class _LearnSkillScreenState extends State<LearnSkillScreen> with TickerProvider
                                     ),
                                   ),
                                   const SizedBox(width: 12),
-                                  Icon(Icons.access_time_rounded, size: 14, color: Colors.white.withOpacity(0.5)),
+                                  Icon(Icons.access_time_rounded, size: 14, color: Colors.white.withValues(alpha: 0.5)),
                                   const SizedBox(width: 4),
                                   Text(
                                     res['d']!,
                                     style: TextStyle(
-                                      color: Colors.white.withOpacity(0.5),
+                                      color: Colors.white.withValues(alpha: 0.5),
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -1066,7 +1064,7 @@ class _LearnSkillScreenState extends State<LearnSkillScreen> with TickerProvider
                         Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: (res['c'] as Color).withOpacity(0.2),
+                            color: (res['c'] as Color).withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: InkWell(
@@ -1127,7 +1125,7 @@ class _LearnSkillScreenState extends State<LearnSkillScreen> with TickerProvider
                         child: LinearProgressIndicator(
                           value: res['progress'],
                           minHeight: 6,
-                          backgroundColor: Colors.white.withOpacity(0.1),
+                          backgroundColor: Colors.white.withValues(alpha: 0.1),
                           valueColor: AlwaysStoppedAnimation<Color>(res['c'] as Color),
                         ),
                       ),
@@ -1159,7 +1157,7 @@ class _LearnSkillScreenState extends State<LearnSkillScreen> with TickerProvider
         Text(
           subtitle,
           style: TextStyle(
-            color: Colors.white.withOpacity(0.5),
+            color: Colors.white.withValues(alpha: 0.5),
             fontSize: 13,
           ),
         ),

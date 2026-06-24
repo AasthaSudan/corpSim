@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,7 +12,7 @@ class NetworkManager {
 
   final Dio _dio = Dio(
     BaseOptions(
-      baseUrl: 'http://10.0.2.2:8000',
+      baseUrl: kIsWeb ? 'http://127.0.0.1:8000' : 'http://10.0.2.2:8000',
       connectTimeout: const Duration(seconds: 5),
       receiveTimeout: const Duration(seconds: 5),
       headers: {'Content-Type': 'application/json'},
@@ -55,12 +54,14 @@ class NetworkManager {
   }) async {
     if (useMockData) {
       await Future.delayed(const Duration(seconds: 1));
+      // ignore: unused_local_variable
       String lastMsg = messages.last.content.toLowerCase();
       String reply = "I've heard your points, but we need to find a middle ground.";
 
       return APIResponse(
         opponentReply: reply,
         newLeverage: (leverage + 0.1).clamp(0.0, 1.0),
+        newPatience: 0.8,
         newMood: 'happy',
         sessionId: sessionID ?? 'mock_${DateTime.now().millisecondsSinceEpoch}',
         coachTip: "Great use of empathy to shift the negotiation mood!",
@@ -80,6 +81,7 @@ class NetworkManager {
       return APIResponse(
         opponentReply: response.data['opponent_message'],
         newLeverage: (response.data['leverage_score'] as num) / 10.0,
+        newPatience: (response.data['patience_level'] as num) / 10.0,
         newMood: response.data['opponent_mood'],
         sessionId: sessionID ?? 'session_${DateTime.now().millisecondsSinceEpoch}',
         coachTip: response.data['hidden_state']?['internal_thoughts'] ?? 'Stay focused on your goals.',
@@ -103,8 +105,8 @@ class NetworkManager {
 class NegotiationProvider with ChangeNotifier {
   List<ChatMessage> _messages = [];
   String? _sessionID;
-  double _leverage = 0.5;
-  double _patience = 0.8;
+  double _leverage = 1.0;
+  double _patience = 1.0;
   int _timeRemaining = 900;
   bool _isLoading = false;
   String? _error;
@@ -124,8 +126,8 @@ class NegotiationProvider with ChangeNotifier {
   void startNewSession(String scenario) {
     _messages = [ChatMessage(id: '1', content: 'Hello. Let\'s discuss the terms.', isUser: false, timestamp: DateTime.now())];
     _sessionID = null;
-    _leverage = 0.5;
-    _patience = 0.8;
+    _leverage = 1.0;
+    _patience = 1.0;
     _timeRemaining = 900;
     notifyListeners();
   }
@@ -140,6 +142,7 @@ class NegotiationProvider with ChangeNotifier {
       final response = await NetworkManager.shared.sendToAI(scenario: scenario, messages: _messages, leverage: _leverage, sessionID: _sessionID);
       _messages.add(ChatMessage(id: DateTime.now().toString(), content: response.opponentReply, isUser: false, timestamp: DateTime.now()));
       _leverage = response.newLeverage;
+      _patience = response.newPatience;
       _sessionID = response.sessionId;
       _latestCoachTip = response.coachTip;
       _mood = response.newMood;

@@ -46,24 +46,37 @@ class _NegotiationScreenState extends State<NegotiationScreen> {
     super.dispose();
   }
 
-  void _sendMessage() {
+  Future<void> _sendMessage() async {
     final text = _inputController.text.trim();
     if (text.isEmpty) return;
 
-    context.read<NegotiationProvider>().sendMessage(widget.scenario.title, text);
+    final provider = context.read<NegotiationProvider>();
+    await provider.sendMessage(widget.scenario.title, text);
     _inputController.clear();
     _showCoachTip = true;
 
     // Auto scroll
-    Future.delayed(const Duration(milliseconds: 300), () {
-      if (_scrollController.hasClients) {
-        _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOut,
-        );
-      }
-    });
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
+
+    // Auto terminate if patience runs out or mood is angry/terminated
+    if (provider.patience <= 0.0 || 
+        provider.mood.toLowerCase() == 'angry' || 
+        provider.mood.toLowerCase() == 'terminated') {
+      if (!mounted) return;
+      provider.endSession(context.read<SessionProvider>(), widget.scenario.title);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => AnalysisScreen(sessionId: provider.sessionID ?? "mock"),
+        ),
+      );
+    }
   }
 
   void _endNegotiation() {
@@ -116,7 +129,7 @@ class _NegotiationScreenState extends State<NegotiationScreen> {
                   shape: BoxShape.circle,
                   gradient: RadialGradient(
                     colors: [
-                      AppColors.teal.withOpacity(0.05),
+                      AppColors.teal.withValues(alpha: 0.05),
                       Colors.transparent,
                     ],
                   ),
@@ -135,9 +148,9 @@ class _NegotiationScreenState extends State<NegotiationScreen> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                     decoration: BoxDecoration(
-                      color: AppColors.surface.withOpacity(0.8),
+                      color: AppColors.surface.withValues(alpha: 0.8),
                       border: Border(
-                        bottom: BorderSide(color: Colors.white.withOpacity(0.05)),
+                        bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05)),
                       ),
                     ),
                     child: Consumer<NegotiationProvider>(
@@ -164,8 +177,8 @@ class _NegotiationScreenState extends State<NegotiationScreen> {
                                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                   decoration: BoxDecoration(
                                     color: provider.timeRemaining < 60
-                                        ? AppColors.error.withOpacity(0.2)
-                                        : Colors.white.withOpacity(0.05),
+                                        ? AppColors.error.withValues(alpha: 0.2)
+                                        : Colors.white.withValues(alpha: 0.05),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Row(
@@ -197,7 +210,7 @@ class _NegotiationScreenState extends State<NegotiationScreen> {
                                   onPressed: _endNegotiation,
                                   style: TextButton.styleFrom(
                                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                    backgroundColor: Colors.white.withOpacity(0.05),
+                                    backgroundColor: Colors.white.withValues(alpha: 0.05),
                                     shape: const StadiumBorder(),
                                   ),
                                   child: Text(
@@ -205,7 +218,7 @@ class _NegotiationScreenState extends State<NegotiationScreen> {
                                     style: TextStyle(
                                       fontSize: 11,
                                       fontWeight: FontWeight.bold,
-                                      color: AppColors.textPrimary.withOpacity(0.8),
+                                      color: AppColors.textPrimary.withValues(alpha: 0.8),
                                     ),
                                   ),
                                 ),
@@ -313,9 +326,9 @@ class _NegotiationScreenState extends State<NegotiationScreen> {
                       margin: const EdgeInsets.symmetric(horizontal: 16),
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: AppColors.error.withOpacity(0.1),
+                        color: AppColors.error.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: AppColors.error.withOpacity(0.3)),
+                        border: Border.all(color: AppColors.error.withValues(alpha: 0.3)),
                       ),
                       child: Row(
                         children: [
@@ -345,7 +358,7 @@ class _NegotiationScreenState extends State<NegotiationScreen> {
                   child: Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: AppColors.background.withOpacity(0.95),
+                      color: AppColors.background.withValues(alpha: 0.95),
                     ),
                     child: Row(
                       children: [
@@ -367,17 +380,17 @@ class _NegotiationScreenState extends State<NegotiationScreen> {
                             decoration: InputDecoration(
                               hintText: 'Type your response...',
                               hintStyle: TextStyle(
-                                color: AppColors.textSecondary.withOpacity(0.5),
+                                color: AppColors.textSecondary.withValues(alpha: 0.5),
                               ),
                               filled: true,
-                              fillColor: Colors.white.withOpacity(0.05),
+                              fillColor: Colors.white.withValues(alpha: 0.05),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(24),
-                                borderSide: BorderSide(color: Colors.white.withOpacity(0.1)),
+                                borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(24),
-                                borderSide: BorderSide(color: Colors.white.withOpacity(0.1)),
+                                borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(24),
@@ -404,7 +417,7 @@ class _NegotiationScreenState extends State<NegotiationScreen> {
                                 height: 40,
                                 decoration: BoxDecoration(
                                   gradient: isEmpty ? null : AppGradients.teal,
-                                  color: isEmpty ? Colors.white.withOpacity(0.2) : null,
+                                  color: isEmpty ? Colors.white.withValues(alpha: 0.2) : null,
                                   shape: BoxShape.circle,
                                 ),
                                 child: provider.isLoading
@@ -455,9 +468,9 @@ class _NegotiationScreenState extends State<NegotiationScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: modeColor.withOpacity(0.1),
+        color: modeColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: modeColor.withOpacity(0.3)),
+        border: Border.all(color: modeColor.withValues(alpha: 0.3)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -490,9 +503,9 @@ class _NegotiationScreenState extends State<NegotiationScreen> {
       margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppColors.surface.withOpacity(0.8),
+        color: AppColors.surface.withValues(alpha: 0.8),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.teal.withOpacity(0.3)),
+        border: Border.all(color: AppColors.teal.withValues(alpha: 0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -534,9 +547,9 @@ class _NegotiationScreenState extends State<NegotiationScreen> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.05),
+                    color: Colors.white.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: Colors.white.withOpacity(0.1)),
+                    border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
                   ),
                   child: Text(
                     msg.$1,

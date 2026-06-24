@@ -43,7 +43,7 @@ class ScenarioCard extends StatelessWidget {
                       width: 44,
                       height: 44,
                       decoration: BoxDecoration(
-                        color: scenarioColor.withOpacity(0.15),
+                        color: scenarioColor.withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Center(
@@ -60,7 +60,7 @@ class ScenarioCard extends StatelessWidget {
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.08),
+                        color: Colors.white.withValues(alpha: 0.08),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
@@ -68,7 +68,7 @@ class ScenarioCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.textPrimary.withOpacity(0.8),
+                          color: AppColors.textPrimary.withValues(alpha: 0.8),
                         ),
                       ),
                     ),

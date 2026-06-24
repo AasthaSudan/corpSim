@@ -173,6 +173,7 @@ class APIResponse {
   final String opponentReply;
   final String coachTip;
   final double newLeverage;
+  final double newPatience;
   final String newMood;
   final String sessionId;
 
@@ -180,6 +181,7 @@ class APIResponse {
     required this.opponentReply,
     required this.coachTip,
     required this.newLeverage,
+    required this.newPatience,
     required this.newMood,
     required this.sessionId,
   });
@@ -189,6 +191,7 @@ class APIResponse {
       opponentReply: json['opponent_reply'] as String,
       coachTip: json['coach_tip'] as String,
       newLeverage: (json['new_leverage'] as num).toDouble(),
+      newPatience: (json['new_patience'] as num?)?.toDouble() ?? 1.0,
       newMood: json['new_mood'] as String,
       sessionId: json['session_id'] as String,
     );

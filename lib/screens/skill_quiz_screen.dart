@@ -364,7 +364,7 @@ class _SkillQuizScreenState extends State<SkillQuizScreen> {
                               child: LinearProgressIndicator(
                                 value: progress,
                                 backgroundColor:
-                                AppColors.surface.withOpacity(0.3),
+                                AppColors.surface.withValues(alpha: 0.3),
                                 valueColor: AlwaysStoppedAnimation<Color>(
                                   AppColors.amber,
                                 ),
@@ -398,7 +398,7 @@ class _SkillQuizScreenState extends State<SkillQuizScreen> {
                                       boxShadow: [
                                         BoxShadow(
                                           color:
-                                          AppColors.amber.withOpacity(0.3),
+                                          AppColors.amber.withValues(alpha: 0.3),
                                           blurRadius: 20,
                                           offset: const Offset(0, 8),
                                         ),
@@ -470,7 +470,7 @@ class _SkillQuizScreenState extends State<SkillQuizScreen> {
                             child: GlassCard(
                               color: Colors.transparent,
                               border: Border.all(
-                                color: AppColors.textSecondary.withOpacity(0.3),
+                                color: AppColors.textSecondary.withValues(alpha: 0.3),
                                 width: 1.5,
                               ),
                               child: InkWell(
@@ -539,12 +539,12 @@ class _SkillQuizScreenState extends State<SkillQuizScreen> {
   Widget _buildAnswerOption(String answer, int index, bool isSelected) {
     return GlassContainer(
       color: isSelected
-          ? AppColors.amber.withOpacity(0.1)
+          ? AppColors.amber.withValues(alpha: 0.1)
           : Colors.transparent,
       border: Border.all(
         color: isSelected
             ? AppColors.amber
-            : AppColors.textSecondary.withOpacity(0.2),
+            : AppColors.textSecondary.withValues(alpha: 0.2),
         width: isSelected ? 2 : 1,
       ),
       child: InkWell(
@@ -561,11 +561,11 @@ class _SkillQuizScreenState extends State<SkillQuizScreen> {
                   shape: BoxShape.circle,
                   color: isSelected
                       ? AppColors.amber
-                      : AppColors.surface.withOpacity(0.3),
+                      : AppColors.surface.withValues(alpha: 0.3),
                   border: Border.all(
                     color: isSelected
                         ? AppColors.amber
-                        : AppColors.textSecondary.withOpacity(0.3),
+                        : AppColors.textSecondary.withValues(alpha: 0.3),
                     width: 2,
                   ),
                 ),
@@ -669,14 +669,14 @@ class _SkillQuizScreenState extends State<SkillQuizScreen> {
                       height: 120,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          colors: [accentColor, accentColor.withOpacity(0.6)],
+                          colors: [accentColor, accentColor.withValues(alpha: 0.6)],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: accentColor.withOpacity(0.4),
+                            color: accentColor.withValues(alpha: 0.4),
                             blurRadius: 40,
                             spreadRadius: 10,
                           ),
@@ -771,10 +771,10 @@ class _SkillQuizScreenState extends State<SkillQuizScreen> {
                                 vertical: 8,
                               ),
                               decoration: BoxDecoration(
-                                color: accentColor.withOpacity(0.15),
+                                color: accentColor.withValues(alpha: 0.15),
                                 borderRadius: BorderRadius.circular(20),
                                 border: Border.all(
-                                  color: accentColor.withOpacity(0.3),
+                                  color: accentColor.withValues(alpha: 0.3),
                                 ),
                               ),
                               child: Text(
@@ -868,7 +868,7 @@ class _SkillQuizScreenState extends State<SkillQuizScreen> {
                                               'Your answer: ${question.options[userAnswer ?? 0]}',
                                               style: TextStyle(
                                                 color: AppColors.error
-                                                    .withOpacity(0.8),
+                                                    .withValues(alpha: 0.8),
                                                 fontSize: 13,
                                               ),
                                             ),
@@ -878,7 +878,7 @@ class _SkillQuizScreenState extends State<SkillQuizScreen> {
                                             'Correct answer: ${question.options[question.correctAnswerIndex]}',
                                             style: TextStyle(
                                               color: AppColors.success
-                                                  .withOpacity(0.9),
+                                                  .withValues(alpha: 0.9),
                                               fontSize: 13,
                                               fontWeight: FontWeight.w600,
                                             ),
@@ -903,7 +903,7 @@ class _SkillQuizScreenState extends State<SkillQuizScreen> {
                                   Padding(
                                     padding: const EdgeInsets.only(top: 16),
                                     child: Divider(
-                                      color: AppColors.surface.withOpacity(0.3),
+                                      color: AppColors.surface.withValues(alpha: 0.3),
                                     ),
                                   ),
                               ],
@@ -922,7 +922,7 @@ class _SkillQuizScreenState extends State<SkillQuizScreen> {
                           child: GlassContainer(
                             color: Colors.transparent,
                             border: Border.all(
-                              color: AppColors.textSecondary.withOpacity(0.3),
+                              color: AppColors.textSecondary.withValues(alpha: 0.3),
                               width: 1.5,
                             ),
                             child: InkWell(

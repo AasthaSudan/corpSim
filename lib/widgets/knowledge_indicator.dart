@@ -23,13 +23,13 @@ class KnowledgeIndicator extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            color.withOpacity(0.2),
-            color.withOpacity(0.1),
+            color.withValues(alpha: 0.2),
+            color.withValues(alpha: 0.1),
           ],
         ),
         border: Border(
           bottom: BorderSide(
-            color: Colors.white.withOpacity(0.1),
+            color: Colors.white.withValues(alpha: 0.1),
           ),
         ),
       ),
@@ -49,7 +49,7 @@ class KnowledgeIndicator extends StatelessWidget {
                     Text(
                       'Knowledge Score',
                       style: TextStyle(
-                        color: Colors.white.withOpacity(0.7),
+                        color: Colors.white.withValues(alpha: 0.7),
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
@@ -62,7 +62,7 @@ class KnowledgeIndicator extends StatelessWidget {
                             borderRadius: BorderRadius.circular(8),
                             child: LinearProgressIndicator(
                               value: knowledgeScore,
-                              backgroundColor: Colors.white.withOpacity(0.1),
+                              backgroundColor: Colors.white.withValues(alpha: 0.1),
                               valueColor: AlwaysStoppedAnimation<Color>(color),
                               minHeight: 8,
                             ),
@@ -89,7 +89,7 @@ class KnowledgeIndicator extends StatelessWidget {
           Text(
             _getLevelDescription(knowledgeScore),
             style: TextStyle(
-              color: Colors.white.withOpacity(0.6),
+              color: Colors.white.withValues(alpha: 0.6),
               fontSize: 11,
               fontStyle: FontStyle.italic,
             ),
@@ -100,7 +100,7 @@ class KnowledgeIndicator extends StatelessWidget {
       target: knowledgeScore > 0.5 ? 1 : 0,
     ).shimmer(
       duration: 2000.ms,
-      color: color.withOpacity(0.5),
+      color: color.withValues(alpha: 0.5),
     );
   }
 

@@ -176,9 +176,9 @@ class _DailyTaskScreenState extends State<DailyTaskScreen> {
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                               decoration: BoxDecoration(
-                                color: AppColors.amber.withOpacity(0.15),
+                                color: AppColors.amber.withValues(alpha: 0.15),
                                 borderRadius: BorderRadius.circular(20),
-                                border: Border.all(color: AppColors.amber.withOpacity(0.3)),
+                                border: Border.all(color: AppColors.amber.withValues(alpha: 0.3)),
                               ),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
@@ -225,7 +225,7 @@ class _DailyTaskScreenState extends State<DailyTaskScreen> {
                               borderRadius: BorderRadius.circular(10),
                               child: LinearProgressIndicator(
                                 value: progress,
-                                backgroundColor: AppColors.surface.withOpacity(0.3),
+                                backgroundColor: AppColors.surface.withValues(alpha: 0.3),
                                 valueColor: const AlwaysStoppedAnimation<Color>(AppColors.teal),
                                 minHeight: 10,
                               ),
@@ -354,10 +354,10 @@ class _DailyTaskScreenState extends State<DailyTaskScreen> {
   Widget _buildStepCard(TaskStep step, int index) {
     return GlassContainer(
       color: step.isCompleted
-          ? AppColors.success.withOpacity(0.05)
+          ? AppColors.success.withValues(alpha: 0.05)
           : Colors.transparent,
       border: step.isCompleted
-          ? Border.all(color: AppColors.success.withOpacity(0.3), width: 1.5)
+          ? Border.all(color: AppColors.success.withValues(alpha: 0.3), width: 1.5)
           : null,
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -380,7 +380,7 @@ class _DailyTaskScreenState extends State<DailyTaskScreen> {
                       border: Border.all(
                         color: step.isCompleted
                             ? AppColors.success
-                            : AppColors.textSecondary.withOpacity(0.3),
+                            : AppColors.textSecondary.withValues(alpha: 0.3),
                         width: 2,
                       ),
                       borderRadius: BorderRadius.circular(8),
@@ -422,10 +422,10 @@ class _DailyTaskScreenState extends State<DailyTaskScreen> {
                         Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: AppColors.amber.withOpacity(0.1),
+                            color: AppColors.amber.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
-                              color: AppColors.amber.withOpacity(0.3),
+                              color: AppColors.amber.withValues(alpha: 0.3),
                             ),
                           ),
                           child: Row(
@@ -460,7 +460,7 @@ class _DailyTaskScreenState extends State<DailyTaskScreen> {
 
   Widget _buildConfidenceRating() {
     return GlassContainer(
-      color: AppColors.purple.withOpacity(0.05),
+      color: AppColors.purple.withValues(alpha: 0.05),
       child: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
@@ -505,11 +505,11 @@ class _DailyTaskScreenState extends State<DailyTaskScreen> {
                     decoration: BoxDecoration(
                       color: isSelected
                           ? AppColors.amber
-                          : AppColors.surface.withOpacity(0.3),
+                          : AppColors.surface.withValues(alpha: 0.3),
                       shape: BoxShape.circle,
                       boxShadow: isSelected ? [
                         BoxShadow(
-                          color: AppColors.amber.withOpacity(0.4),
+                          color: AppColors.amber.withValues(alpha: 0.4),
                           blurRadius: 12,
                           spreadRadius: 2,
                         ),
@@ -583,9 +583,9 @@ class _DailyTaskScreenState extends State<DailyTaskScreen> {
               style: Theme.of(context).textTheme.bodyMedium,
               decoration: InputDecoration(
                 hintText: 'What did you learn today? Any challenges?',
-                hintStyle: TextStyle(color: AppColors.textSecondary.withOpacity(0.6)),
+                hintStyle: TextStyle(color: AppColors.textSecondary.withValues(alpha: 0.6)),
                 filled: true,
-                fillColor: AppColors.surface.withOpacity(0.3),
+                fillColor: AppColors.surface.withValues(alpha: 0.3),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide.none,
@@ -618,7 +618,7 @@ class _DailyTaskScreenState extends State<DailyTaskScreen> {
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.teal.withOpacity(0.4),
+                      color: AppColors.teal.withValues(alpha: 0.4),
                       blurRadius: 30,
                       spreadRadius: 5,
                     ),

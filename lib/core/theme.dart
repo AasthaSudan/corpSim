@@ -66,9 +66,9 @@ class AppGradients {
 
   static final orb = SweepGradient(
     colors: [
-      AppColors.purple.withOpacity(0.2),
-      AppColors.teal.withOpacity(0.2),
-      AppColors.purple.withOpacity(0.2),
+      AppColors.purple.withValues(alpha: 0.2),
+      AppColors.teal.withValues(alpha: 0.2),
+      AppColors.purple.withValues(alpha: 0.2),
     ],
   );
 }
@@ -83,7 +83,6 @@ class AppTheme {
         primary: AppColors.teal,
         secondary: AppColors.purple,
         tertiary: AppColors.amber,
-        background: AppColors.background,
         surface: AppColors.surface,
         error: AppColors.error,
       ),
@@ -157,7 +156,7 @@ class AppTheme {
         ),
       ),
       cardTheme: CardThemeData(
-        color: AppColors.surface.withOpacity(0.5),
+        color: AppColors.surface.withValues(alpha: 0.5),
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
@@ -165,18 +164,18 @@ class AppTheme {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: Colors.white.withOpacity(0.05),
+        fillColor: Colors.white.withValues(alpha: 0.05),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(24),
           borderSide: BorderSide(
-            color: Colors.white.withOpacity(0.1),
+            color: Colors.white.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(24),
           borderSide: BorderSide(
-            color: Colors.white.withOpacity(0.1),
+            color: Colors.white.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
@@ -225,16 +224,16 @@ class GlassContainer extends StatelessWidget {
         filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
         child: Container(
           decoration: BoxDecoration(
-            color: color ?? Colors.white.withOpacity(opacity),
+            color: color ?? Colors.white.withValues(alpha: opacity),
             borderRadius: borderRadius ?? BorderRadius.circular(16),
             border: border ??
                 Border.all(
-                  color: Colors.white.withOpacity(0.08),
+                  color: Colors.white.withValues(alpha: 0.08),
                   width: 1,
                 ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.25),
+                color: Colors.black.withValues(alpha: 0.25),
                 blurRadius: 10,
                 offset: const Offset(0, 5),
               ),
@@ -297,9 +296,9 @@ class _AnimatedOrbState extends State<AnimatedOrb>
               shape: BoxShape.circle,
               gradient: SweepGradient(
                 colors: [
-                  widget.color.withOpacity(0.2),
-                  AppColors.teal.withOpacity(0.2),
-                  widget.color.withOpacity(0.2),
+                  widget.color.withValues(alpha: 0.2),
+                  AppColors.teal.withValues(alpha: 0.2),
+                  widget.color.withValues(alpha: 0.2),
                 ],
               ),
             ),

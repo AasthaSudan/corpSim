@@ -50,7 +50,7 @@ class ChatRow extends StatelessWidget {
                   DateFormat('HH:mm').format(message.timestamp),
                   style: TextStyle(
                     fontSize: 10,
-                    color: Colors.white.withOpacity(0.5),
+                    color: Colors.white.withValues(alpha: 0.5),
                   ),
                 ),
               ],
@@ -78,7 +78,7 @@ class ChatRow extends StatelessWidget {
         color: isUser ? null : const Color(0xFF2D2D2D),
         shape: BoxShape.circle,
         border: Border.all(
-          color: isUser ? AppColors.teal.withOpacity(0.3) : Colors.transparent,
+          color: isUser ? AppColors.teal.withValues(alpha: 0.3) : Colors.transparent,
         ),
       ),
       child: Center(
