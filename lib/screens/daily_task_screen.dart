@@ -140,8 +140,11 @@ class _DailyTaskScreenState extends State<DailyTaskScreen> {
             ),
 
             SafeArea(
-              child: Column(
-                children: [
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 1200),
+                  child: Column(
+                    children: [
                   Padding(
                     padding: const EdgeInsets.all(24),
                     child: Column(
@@ -271,7 +274,7 @@ class _DailyTaskScreenState extends State<DailyTaskScreen> {
                                 ],
                               ),
                             ),
-                          ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.1),
+                          ).animate().fadeIn(duration: 400.ms),
 
                           const SizedBox(height: 24),
 
@@ -289,17 +292,14 @@ class _DailyTaskScreenState extends State<DailyTaskScreen> {
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 16),
                               child: _buildStepCard(step, index).animate()
-                                  .fadeIn(duration: 600.ms, delay: (200 + index * 100).ms)
-                                  .slideX(begin: 0.1),
+                                  .fadeIn(duration: 400.ms),
                             );
                           }),
 
                           const SizedBox(height: 24),
                           if (showConfidenceRating) ...[
                             _buildConfidenceRating().animate()
-                                .fadeIn(duration: 600.ms)
-                                .slideY(begin: 0.2)
-                                .shake(duration: 600.ms, delay: 300.ms),
+                                .fadeIn(duration: 400.ms),
                             const SizedBox(height: 24),
                           ],
 
@@ -338,17 +338,20 @@ class _DailyTaskScreenState extends State<DailyTaskScreen> {
                                 ],
                               ),
                             ),
+
                           ),
                         ),
-                      ).animate().fadeIn(duration: 600.ms, delay: 400.ms),
+                      ).animate().fadeIn(duration: 400.ms),
                     ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-    );
+    ),
+  );
   }
 
   Widget _buildStepCard(TaskStep step, int index) {

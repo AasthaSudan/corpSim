@@ -140,8 +140,11 @@ class _NegotiationScreenState extends State<NegotiationScreen> {
               ),
             ),
 
-            Column(
-              children: [
+            Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 1200),
+                child: Column(
+                  children: [
                 // Top Bar with Mode Indicator
                 SafeArea(
                   bottom: false,
@@ -292,7 +295,7 @@ class _NegotiationScreenState extends State<NegotiationScreen> {
                           ],
                         ),
                       ),
-                    ).animate().fadeIn(duration: 400.ms).slideY(begin: -0.2);
+                    ).animate().fadeIn(duration: 400.ms);
                   },
                 ),
 
@@ -309,8 +312,7 @@ class _NegotiationScreenState extends State<NegotiationScreen> {
                             padding: const EdgeInsets.only(bottom: 20),
                             child: ChatRow(message: message)
                                 .animate()
-                                .fadeIn(duration: 400.ms)
-                                .slideX(begin: message.isUser ? 0.2 : -0.2),
+                                .fadeIn(duration: 400.ms),
                           );
                         },
                       );
@@ -441,7 +443,9 @@ class _NegotiationScreenState extends State<NegotiationScreen> {
                     ),
                   ),
                 ),
-              ],
+                  ],
+                ),
+              ),
             ),
           ],
         ),

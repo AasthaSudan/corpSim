@@ -78,7 +78,10 @@ class _LandingScreenState extends State<LandingScreen>
 
             // Content
             SafeArea(
-              child: Padding(
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 1200),
+                  child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -124,8 +127,7 @@ class _LandingScreenState extends State<LandingScreen>
                       ),
                     )
                         .animate()
-                        .fadeIn(duration: 600.ms, delay: 300.ms)
-                        .slideY(begin: 0.3, end: 0),
+                        .fadeIn(duration: 400.ms),
 
                     const SizedBox(height: 16),
 
@@ -137,21 +139,21 @@ class _LandingScreenState extends State<LandingScreen>
                       textAlign: TextAlign.center,
                     )
                         .animate()
-                        .fadeIn(duration: 600.ms, delay: 500.ms)
-                        .slideY(begin: 0.3, end: 0),
+                        .fadeIn(duration: 400.ms),
 
                     const Spacer(),
 
                     _buildPrimaryButton()
                         .animate()
-                        .fadeIn(duration: 600.ms, delay: 800.ms)
-                        .slideY(begin: 0.3, end: 0),
+                        .fadeIn(duration: 400.ms),
 
                     const SizedBox(height: 50),
                   ],
                 ),
               ),
             ),
+            ),
+          ),
           ],
         ),
       ),

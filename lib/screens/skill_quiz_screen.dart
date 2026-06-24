@@ -297,7 +297,10 @@ class _SkillQuizScreenState extends State<SkillQuizScreen> {
             ),
 
             SafeArea(
-              child: Column(
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 1200),
+                  child: Column(
                 children: [
                   // Header
                   Padding(
@@ -427,8 +430,7 @@ class _SkillQuizScreenState extends State<SkillQuizScreen> {
                             ),
                           )
                               .animate()
-                              .fadeIn(duration: 600.ms)
-                              .slideY(begin: 0.2),
+                              .fadeIn(duration: 400.ms),
 
                           const SizedBox(height: 24),
 
@@ -447,10 +449,7 @@ class _SkillQuizScreenState extends State<SkillQuizScreen> {
                                 isSelected,
                               )
                                   .animate()
-                                  .fadeIn(
-                                  duration: 600.ms,
-                                  delay: (200 + index * 100).ms)
-                                  .slideX(begin: 0.2),
+                                  .fadeIn(duration: 400.ms),
                             );
                           }),
 
@@ -527,8 +526,10 @@ class _SkillQuizScreenState extends State<SkillQuizScreen> {
                       ],
                     ),
                   ),
-                ],
+                  ],
+                ),
               ),
+            ),
             ),
           ],
         ),
@@ -657,7 +658,10 @@ class _SkillQuizScreenState extends State<SkillQuizScreen> {
             ),
 
             SafeArea(
-              child: SingleChildScrollView(
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 1200),
+                  child: SingleChildScrollView(
                 padding: const EdgeInsets.all(24),
                 child: Column(
                   children: [
@@ -978,7 +982,9 @@ class _SkillQuizScreenState extends State<SkillQuizScreen> {
 
                     const SizedBox(height: 40),
                   ],
+                  ),
                 ),
+              ),
               ),
             ),
           ],

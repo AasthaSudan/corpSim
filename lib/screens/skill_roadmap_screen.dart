@@ -104,7 +104,10 @@ class _SkillRoadmapScreenState extends State<SkillRoadmapScreen> {
             ),
 
             SafeArea(
-              child: CustomScrollView(
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 1200),
+                  child: CustomScrollView(
                 slivers: [
                   // App Bar
                   SliverAppBar(
@@ -171,8 +174,10 @@ class _SkillRoadmapScreenState extends State<SkillRoadmapScreen> {
                       ]),
                     ),
                   ),
-                ],
+                  ],
+                ),
               ),
+            ),
             ),
           ],
         ),
@@ -283,7 +288,7 @@ class _SkillRoadmapScreenState extends State<SkillRoadmapScreen> {
               ],
             ),
           ),
-        ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.2),
+        ).animate().fadeIn(duration: 400.ms),
       ],
     );
   }
@@ -429,7 +434,7 @@ class _SkillRoadmapScreenState extends State<SkillRoadmapScreen> {
           ),
         ),
       ),
-    ).animate().fadeIn(duration: 600.ms, delay: 200.ms).slideY(begin: 0.2);
+    ).animate().fadeIn(duration: 400.ms);
   }
 
   Widget _buildWeekSection(String title, List<DailyTask> tasks, int weekNumber) {
@@ -464,13 +469,11 @@ class _SkillRoadmapScreenState extends State<SkillRoadmapScreen> {
         const SizedBox(height: 16),
 
         // Day Cards
-        ...tasks.asMap().entries.map((entry) {
-          final index = entry.key;
+        ...tasks.map((task) {
           return Padding(
             padding: const EdgeInsets.only(bottom: 12),
-            child: _buildDayCard(entry.value).animate()
-                .fadeIn(duration: 600.ms, delay: (400 + index * 50).ms)
-                .slideX(begin: 0.1),
+            child: _buildDayCard(task).animate()
+                .fadeIn(duration: 400.ms),
           );
         }),
       ],

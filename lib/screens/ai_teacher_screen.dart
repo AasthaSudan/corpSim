@@ -230,7 +230,10 @@ class _AITeacherScreenState extends State<AITeacherScreen> {
           gradient: AppGradients.main,
         ),
         child: SafeArea(
-          child: Column(
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 1200),
+              child: Column(
             children: [
               Padding(
                 padding: const EdgeInsets.all(16),
@@ -376,7 +379,9 @@ class _AITeacherScreenState extends State<AITeacherScreen> {
             ],
           ),
         ),
+        ),
       ),
+    ),
     );
   }
 

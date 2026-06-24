@@ -16,8 +16,11 @@ class ScenariosScreen extends StatelessWidget {
           gradient: AppGradients.main,
         ),
         child: SafeArea(
-          child: CustomScrollView(
-            slivers: [
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 1200),
+              child: CustomScrollView(
+                slivers: [
               // App Bar
               SliverAppBar(
                 backgroundColor: Colors.transparent,
@@ -39,12 +42,12 @@ class ScenariosScreen extends StatelessWidget {
                       Text(
                         'Scenario Library',
                         style: Theme.of(context).textTheme.displayMedium,
-                      ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.2),
+                      ).animate().fadeIn(duration: 600.ms),
                       const SizedBox(height: 8),
                       Text(
                         'Choose a simulation environment to practice.',
                         style: Theme.of(context).textTheme.bodyMedium,
-                      ).animate().fadeIn(duration: 600.ms, delay: 200.ms).slideY(begin: 0.2),
+                      ).animate().fadeIn(duration: 600.ms),
                     ],
                   ),
                 ),
@@ -55,10 +58,10 @@ class ScenariosScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 sliver: SliverGrid(
                   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 320,
+                    maxCrossAxisExtent: 360,
                     mainAxisSpacing: 16,
                     crossAxisSpacing: 16,
-                    childAspectRatio: 0.85,
+                    childAspectRatio: 0.9,
                   ),
                   delegate: SliverChildBuilderDelegate(
                         (context, index) {
@@ -74,8 +77,7 @@ class ScenariosScreen extends StatelessWidget {
                         },
                       )
                           .animate()
-                          .fadeIn(duration: 600.ms, delay: (index * 100).ms)
-                          .slideY(begin: 0.2);
+                          .fadeIn(duration: 400.ms);
                     },
                     childCount: MockData.scenarios.length,
                   ),
@@ -84,6 +86,8 @@ class ScenariosScreen extends StatelessWidget {
 
               const SliverToBoxAdapter(child: SizedBox(height: 24)),
             ],
+          ),
+            ),
           ),
         ),
       ),

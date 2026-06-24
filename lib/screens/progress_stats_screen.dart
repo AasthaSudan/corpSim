@@ -44,7 +44,10 @@ class _ProgressStatsScreenState extends State<ProgressStatsScreen> {
             ),
 
             SafeArea(
-              child: CustomScrollView(
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 1200),
+                  child: CustomScrollView(
                 slivers: [
                   // App Bar
                   SliverAppBar(
@@ -84,7 +87,7 @@ class _ProgressStatsScreenState extends State<ProgressStatsScreen> {
                               ),
                             ),
                           ],
-                        ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.2),
+                        ).animate().fadeIn(duration: 400.ms),
 
                         const SizedBox(height: 12),
 
@@ -108,7 +111,7 @@ class _ProgressStatsScreenState extends State<ProgressStatsScreen> {
                               ),
                             ),
                           ],
-                        ).animate().fadeIn(duration: 600.ms, delay: 100.ms).slideY(begin: 0.2),
+                        ).animate().fadeIn(duration: 400.ms),
 
                         const SizedBox(height: 32),
 
@@ -117,8 +120,7 @@ class _ProgressStatsScreenState extends State<ProgressStatsScreen> {
                         const SizedBox(height: 16),
 
                         _buildConfidenceChart().animate()
-                            .fadeIn(duration: 600.ms, delay: 200.ms)
-                            .slideX(begin: 0.1),
+                            .fadeIn(duration: 400.ms),
 
                         const SizedBox(height: 32),
 
@@ -127,8 +129,7 @@ class _ProgressStatsScreenState extends State<ProgressStatsScreen> {
                         const SizedBox(height: 16),
 
                         _buildWeeklyCalendar().animate()
-                            .fadeIn(duration: 600.ms, delay: 300.ms)
-                            .slideX(begin: 0.1),
+                            .fadeIn(duration: 400.ms),
 
                         const SizedBox(height: 32),
 
@@ -145,14 +146,15 @@ class _ProgressStatsScreenState extends State<ProgressStatsScreen> {
                         const SizedBox(height: 16),
 
                         _buildInsightsCard().animate()
-                            .fadeIn(duration: 600.ms, delay: 500.ms)
-                            .slideY(begin: 0.1),
+                            .fadeIn(duration: 400.ms),
 
                         const SizedBox(height: 40),
                       ]),
                     ),
                   ),
                 ],
+              ),
+                ),
               ),
             ),
           ],
@@ -392,9 +394,8 @@ class _ProgressStatsScreenState extends State<ProgressStatsScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: days.asMap().entries.map((entry) {
-                final index = entry.key;
                 final day = entry.value;
-                final isCompleted = completed[index];
+                final isCompleted = completed[entry.key];
 
                 return Column(
                   children: [
@@ -510,15 +511,12 @@ class _ProgressStatsScreenState extends State<ProgressStatsScreen> {
     ];
 
     return Column(
-      children: achievements.asMap().entries.map((entry) {
-        final index = entry.key;
-        final achievement = entry.value;
+      children: achievements.map((achievement) {
 
         return Padding(
           padding: const EdgeInsets.only(bottom: 12),
           child: _buildAchievementCard(achievement).animate()
-              .fadeIn(duration: 600.ms, delay: (400 + index * 100).ms)
-              .slideX(begin: 0.1),
+              .fadeIn(duration: 400.ms),
         );
       }).toList(),
     );

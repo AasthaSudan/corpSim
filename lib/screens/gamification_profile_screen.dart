@@ -41,7 +41,10 @@ class _GamificationProfileScreenState extends State<GamificationProfileScreen> {
             ),
 
             SafeArea(
-              child: CustomScrollView(
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 1200),
+                  child: CustomScrollView(
                 slivers: [
                   // App Bar
                   SliverAppBar(
@@ -81,6 +84,8 @@ class _GamificationProfileScreenState extends State<GamificationProfileScreen> {
                     ),
                   ),
                 ],
+              ),
+                ),
               ),
             ),
           ],
@@ -135,7 +140,7 @@ class _GamificationProfileScreenState extends State<GamificationProfileScreen> {
                   ),
                 ),
               ],
-            ).animate().scale(duration: 600.ms, curve: Curves.elasticOut),
+            ).animate().fadeIn(duration: 400.ms),
 
             const SizedBox(height: 20),
 
@@ -215,7 +220,7 @@ class _GamificationProfileScreenState extends State<GamificationProfileScreen> {
           ],
         ),
       ),
-    ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.2);
+    ).animate().fadeIn(duration: 400.ms);
   }
 
   Widget _buildQuickStats() {
@@ -248,7 +253,7 @@ class _GamificationProfileScreenState extends State<GamificationProfileScreen> {
           ),
         ),
       ],
-    ).animate().fadeIn(duration: 600.ms, delay: 200.ms).slideY(begin: 0.1);
+    ).animate().fadeIn(duration: 400.ms);
   }
 
   Widget _buildStatCard(IconData icon, String label, String value, Color color) {
@@ -370,8 +375,7 @@ class _GamificationProfileScreenState extends State<GamificationProfileScreen> {
       itemCount: achievements.length,
       itemBuilder: (context, index) {
         return _buildAchievementBadge(achievements[index]).animate()
-            .fadeIn(duration: 600.ms, delay: (300 + index * 100).ms)
-            .scale(duration: 600.ms, delay: (300 + index * 100).ms);
+            .fadeIn(duration: 400.ms);
       },
     );
   }
@@ -467,13 +471,9 @@ class _GamificationProfileScreenState extends State<GamificationProfileScreen> {
     return Wrap(
       spacing: 12,
       runSpacing: 12,
-      children: badges.asMap().entries.map((entry) {
-        final index = entry.key;
-        final badge = entry.value;
-
+      children: badges.map((badge) {
         return _buildBadgeItem(badge).animate()
-            .fadeIn(duration: 600.ms, delay: (400 + index * 80).ms)
-            .scale(duration: 600.ms, delay: (400 + index * 80).ms);
+            .fadeIn(duration: 400.ms);
       }).toList(),
     );
   }
@@ -523,15 +523,11 @@ class _GamificationProfileScreenState extends State<GamificationProfileScreen> {
     ];
 
     return Column(
-      children: milestones.asMap().entries.map((entry) {
-        final index = entry.key;
-        final milestone = entry.value;
-
+      children: milestones.map((milestone) {
         return Padding(
           padding: const EdgeInsets.only(bottom: 12),
           child: _buildMilestoneCard(milestone).animate()
-              .fadeIn(duration: 600.ms, delay: (500 + index * 100).ms)
-              .slideX(begin: 0.1, delay: (500 + index * 100).ms),
+              .fadeIn(duration: 400.ms),
         );
       }).toList(),
     );

@@ -241,9 +241,12 @@ class _LearnSkillScreenState extends State<LearnSkillScreen> with TickerProvider
       body: Container(
         decoration: const BoxDecoration(gradient: AppGradients.main),
         child: SafeArea(
-          child: FadeTransition(
-            opacity: _fadeAnimation,
-            child: CustomScrollView(
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 1200),
+              child: FadeTransition(
+                opacity: _fadeAnimation,
+                child: CustomScrollView(
               physics: const BouncingScrollPhysics(),
               slivers: [
                 _buildEnhancedHeader(context),
@@ -279,8 +282,10 @@ class _LearnSkillScreenState extends State<LearnSkillScreen> with TickerProvider
           ),
         ),
       ),
-    );
-  }
+    ),
+  ),
+);
+}
 
   Widget _buildEnhancedHeader(BuildContext context) {
     return SliverAppBar(

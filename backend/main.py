@@ -347,6 +347,7 @@ async def get_teacher_response(request: TeacherRequest):
                 *messages
             ],
             temperature=0.7,
+            response_format={"type": "json_object"},
             max_tokens=1024
         )
 
@@ -449,6 +450,7 @@ async def get_opponent_response(request: NegotiationRequest):
                 *messages
             ],
             temperature=0.7,
+            response_format={"type": "json_object"},
             max_tokens=1024
         )
 

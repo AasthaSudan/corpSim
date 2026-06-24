@@ -133,7 +133,10 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
       body: Container(
         decoration: const BoxDecoration(gradient: AppGradients.main),
         child: SafeArea(
-          child: CustomScrollView(
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 1200),
+              child: CustomScrollView(
             slivers: [
               // App Bar
               SliverAppBar(
@@ -194,6 +197,8 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
               ),
             ],
           ),
+            ),
+          ),
         ),
       ),
     );
@@ -244,7 +249,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
           ],
         ),
       ),
-    ).animate().fadeIn(duration: 600.ms).scale();
+    ).animate().fadeIn(duration: 400.ms);
   }
 
   Widget _buildLeverageChart() {
@@ -336,7 +341,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
           ],
         ),
       ),
-    ).animate().fadeIn(duration: 600.ms, delay: 200.ms).slideY(begin: 0.2);
+    ).animate().fadeIn(duration: 400.ms);
   }
 
   Widget _buildSkillGaps() {
@@ -361,7 +366,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
           ],
         ),
       ),
-    ).animate().fadeIn(duration: 600.ms, delay: 400.ms).slideY(begin: 0.2);
+    ).animate().fadeIn(duration: 400.ms);
   }
 
   Widget _buildSkillGapCard(String skill) {

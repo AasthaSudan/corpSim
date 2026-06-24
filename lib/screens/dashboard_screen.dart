@@ -102,7 +102,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         Expanded(
           child: Center(
             child: Container(
-              constraints: const BoxConstraints(maxWidth: 1400),
+              constraints: const BoxConstraints(maxWidth: 1200),
               child: RefreshIndicator(
                 onRefresh: () => context.read<SessionProvider>().loadSessions(),
                 color: AppColors.teal,
@@ -357,25 +357,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 value: '85%',
                 icon: Icons.trending_up,
                 color: AppColors.teal,
-              ).animate().fadeIn(duration: 600.ms).scale(),
+              ).animate().fadeIn(duration: 400.ms),
               StatCard(
                 title: 'Sessions',
                 value: provider.totalSessions.toString(),
                 icon: Icons.tablet,
                 color: AppColors.purple,
-              ).animate().fadeIn(duration: 600.ms, delay: 100.ms).scale(),
+              ).animate().fadeIn(duration: 400.ms),
               StatCard(
                 title: 'Hours',
                 value: provider.hoursInvested,
                 icon: Icons.access_time,
                 color: AppColors.amber,
-              ).animate().fadeIn(duration: 600.ms, delay: 200.ms).scale(),
+              ).animate().fadeIn(duration: 400.ms),
               StatCard(
                 title: 'Scenarios',
                 value: '6/8',
                 icon: Icons.business,
                 color: AppColors.cyan,
-              ).animate().fadeIn(duration: 600.ms, delay: 300.ms).scale(),
+              ).animate().fadeIn(duration: 400.ms),
             ]),
           );
         },
@@ -442,7 +442,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ],
             ),
           ),
-        ).animate().fadeIn(duration: 600.ms, delay: 400.ms).slideX(begin: 0.2),
+        ).animate().fadeIn(duration: 400.ms),
       ),
     );
   }
@@ -515,8 +515,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       padding: const EdgeInsets.only(bottom: 8),
                       child: _ActivityRow(session: session)
                           .animate()
-                          .fadeIn(duration: 400.ms)
-                          .slideX(begin: 0.2),
+                          .fadeIn(duration: 400.ms),
                     );
                   }).toList(),
                 );
